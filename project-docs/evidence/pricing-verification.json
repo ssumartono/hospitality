@@ -1,0 +1,48 @@
+{
+  "recordedAt": "2026-11-02T03:20:35.744Z",
+  "build": "0.4.0",
+  "buildPassed": true,
+  "unit": {
+    "passed": 13,
+    "failed": 0
+  },
+  "integration": {
+    "passed": 31,
+    "failed": 0,
+    "database": "kost_test"
+  },
+  "e2e": {
+    "passed": 10,
+    "failed": 0,
+    "reportedDuration": "1.0m",
+    "database": "kost_e2e",
+    "viewports": [
+      1280,
+      360
+    ]
+  },
+  "firstFullE2E": {
+    "passed": 9,
+    "failed": 1,
+    "reason": "Fixture verification email poll15s; outbox first failure then successful retry at+1minute, attempts2, sent_at set, failed_at null. Assertions unchanged; email poll now75s/test90s."
+  },
+  "npmAuditVulnerabilities": 0,
+  "baselineFiles": 22,
+  "baselineMismatches": 0,
+  "userData": {
+    "historicalIdentitySubsetMatches": true,
+    "oldCounts": {
+      "organizations": 3,
+      "properties": 4
+    },
+    "currentCounts": {
+      "organizations": 4,
+      "properties": 5
+    },
+    "additionalRowsCreatedBeforePricingMigration": true,
+    "fullPrePricingFingerprint": "NOT RECORDED",
+    "evidence": "user-data-pricing-checkpoint.json"
+  },
+  "productionReady": false,
+  "fullAcceptanceAndGates": "NOT COMPLETE"
+}

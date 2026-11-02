@@ -1,0 +1,76 @@
+ALTER TABLE organizations ADD COLUMN created_by uuid REFERENCES users(id);
+CREATE FUNCTION is_org_owner(org uuid) RETURNS boolean LANGUAGE sql STABLE SECURITY DEFINER SET search_path=pg_catalog,public AS $$SELECT EXISTS(SELECT 1 FROM public.memberships WHERE organization_id=org AND user_id=public.current_actor() AND role='Owner' AND revoked_at IS NULL)$$;
+REVOKE ALL ON FUNCTION is_org_owner(uuid) FROM PUBLIC;GRANT EXECUTE ON FUNCTION is_org_owner(uuid) TO kost_app;
+CREATE FUNCTION can_bootstrap_owner(org uuid) RETURNS boolean LANGUAGE sql STABLE SECURITY DEFINER SET search_path=pg_catalog,public AS $$SELECT org=public.current_org() AND EXISTS(SELECT 1 FROM public.organizations WHERE id=org AND created_by=public.current_actor()) AND NOT EXISTS(SELECT 1 FROM public.memberships WHERE organization_id=org)$$;
+REVOKE ALL ON FUNCTION can_bootstrap_owner(uuid) FROM PUBLIC;GRANT EXECUTE ON FUNCTION can_bootstrap_owner(uuid) TO kost_app;
+DROP POLICY membership_scope ON memberships;DROP POLICY membership_create ON memberships;
+CREATE POLICY membership_self_read ON memberships FOR SELECT USING(user_id=current_actor());
+CREATE POLICY membership_owner_read ON memberships FOR SELECT USING(organization_id=current_org() AND is_org_owner(organization_id));
+CREATE POLICY membership_bootstrap ON memberships FOR INSERT WITH CHECK(user_id=current_actor() AND role='Owner' AND revoked_at IS NULL AND can_bootstrap_owner(organization_id));
+DROP POLICY access_read ON location_access;
+CREATE POLICY access_read ON location_access FOR SELECT USING(organization_id=current_org() AND (is_org_owner(organization_id) OR EXISTS(SELECT FROM memberships m WHERE m.id=membership_id AND m.user_id=current_actor() AND m.revoked_at IS NULL)));
+CREATE TABLE invitations(id uuid PRIMARY KEY DEFAULT gen_random_uuid(),organization_id uuid NOT NULL REFERENCES organizations(id),email text NOT NULL CHECK(email=lower(email)),role text NOT NULL CHECK(role IN ('Owner','Manager','Finance','Operations')),token_hash text NOT NULL UNIQUE,created_by uuid NOT NULL REFERENCES users(id),created_at timestamptz NOT NULL DEFAULT now(),expires_at timestamptz NOT NULL DEFAULT now()+interval '72 hours',state text NOT NULL DEFAULT 'pending' CHECK(state IN ('pending','accepted','revoked','expired')),accepted_by uuid REFERENCES users(id),accepted_at timestamptz,revoked_at timestamptz,UNIQUE(organization_id,id));
+CREATE UNIQUE INDEX one_pending_invitation ON invitations(organization_id,email) WHERE state='pending';
+CREATE TABLE invitation_locations(organization_id uuid NOT NULL,invitation_id uuid NOT NULL,property_id uuid NOT NULL,PRIMARY KEY(organization_id,invitation_id,property_id),FOREIGN KEY(organization_id,invitation_id) REFERENCES invitations(organization_id,id),FOREIGN KEY(organization_id,property_id) REFERENCES properties(organization_id,id));
+CREATE TABLE invitation_email_outbox(id uuid PRIMARY KEY DEFAULT gen_random_uuid(),organization_id uuid NOT NULL,invitation_id uuid NOT NULL,email text NOT NULL,organization_name text NOT NULL,token_cipher text,available_at timestamptz NOT NULL DEFAULT now(),attempts integer NOT NULL DEFAULT 0,sent_at timestamptz,failed_at timestamptz,FOREIGN KEY(organization_id,invitation_id) REFERENCES invitations(organization_id,id),UNIQUE(organization_id,invitation_id));
+ALTER TABLE audit_logs ADD COLUMN details jsonb NOT NULL DEFAULT '{}'::jsonb;
+ALTER TABLE invitations ENABLE ROW LEVEL SECURITY;ALTER TABLE invitations FORCE ROW LEVEL SECURITY;
+CREATE POLICY invitation_owner_read ON invitations FOR SELECT USING(organization_id=current_org() AND is_org_owner(organization_id));
+CREATE POLICY invitation_recipient_read ON invitations FOR SELECT USING(organization_id=current_org() AND email=(SELECT email FROM users WHERE id=current_actor()));
+CREATE POLICY invitation_owner_insert ON invitations FOR INSERT WITH CHECK(organization_id=current_org() AND created_by=current_actor() AND is_org_owner(organization_id));
+CREATE POLICY invitation_owner_update ON invitations FOR UPDATE USING(organization_id=current_org() AND is_org_owner(organization_id)) WITH CHECK(organization_id=current_org() AND is_org_owner(organization_id));
+CREATE POLICY invitation_worker_read ON invitations FOR SELECT TO kost_worker USING(organization_id=current_org());
+ALTER TABLE invitation_locations ENABLE ROW LEVEL SECURITY;ALTER TABLE invitation_locations FORCE ROW LEVEL SECURITY;
+CREATE POLICY invitation_location_read ON invitation_locations FOR SELECT USING(organization_id=current_org() AND EXISTS(SELECT FROM invitations i WHERE i.id=invitation_id AND i.organization_id=invitation_locations.organization_id));
+CREATE POLICY invitation_location_insert ON invitation_locations FOR INSERT WITH CHECK(organization_id=current_org() AND is_org_owner(organization_id));
+ALTER TABLE invitation_email_outbox ENABLE ROW LEVEL SECURITY;ALTER TABLE invitation_email_outbox FORCE ROW LEVEL SECURITY;
+CREATE POLICY invitation_email_owner ON invitation_email_outbox FOR INSERT WITH CHECK(organization_id=current_org() AND is_org_owner(organization_id));
+CREATE POLICY invitation_email_dispatch ON invitation_email_outbox FOR SELECT TO kost_worker USING(true);
+CREATE POLICY invitation_email_work ON invitation_email_outbox FOR UPDATE TO kost_worker USING(organization_id=current_org()) WITH CHECK(organization_id=current_org());
+GRANT SELECT,INSERT ON invitations,invitation_locations TO kost_app;
+GRANT UPDATE(state,revoked_at) ON invitations TO kost_app;
+GRANT INSERT ON invitation_email_outbox TO kost_app;
+GRANT SELECT ON invitations TO kost_worker;GRANT SELECT,UPDATE ON invitation_email_outbox TO kost_worker;
+CREATE FUNCTION accept_staff_invitation(p_org uuid,p_invitation uuid,p_token_hash text) RETURNS uuid LANGUAGE plpgsql SECURITY DEFINER SET search_path=pg_catalog,public AS $$
+DECLARE invitation public.invitations%ROWTYPE;actor uuid:=public.current_actor();actor_email text;member uuid;
+BEGIN
+ IF p_org IS DISTINCT FROM public.current_org() OR actor IS NULL THEN RAISE EXCEPTION 'NOT_FOUND' USING ERRCODE='P0404';END IF;
+ PERFORM pg_advisory_xact_lock(hashtextextended('staff:'||p_org::text,0));
+ SELECT email INTO actor_email FROM public.users WHERE id=actor AND verified_at IS NOT NULL;
+ IF actor_email IS NULL THEN RAISE EXCEPTION 'EMAIL_NOT_VERIFIED' USING ERRCODE='P0403';END IF;
+ SELECT * INTO invitation FROM public.invitations WHERE id=p_invitation AND organization_id=p_org AND email=actor_email FOR UPDATE;
+ IF NOT FOUND THEN RAISE EXCEPTION 'NOT_FOUND' USING ERRCODE='P0404';END IF;
+ IF invitation.state<>'pending' OR invitation.expires_at<=now() OR invitation.token_hash<>p_token_hash THEN RAISE EXCEPTION 'INVALID_INVITATION' USING ERRCODE='P0409';END IF;
+ SELECT id INTO member FROM public.memberships WHERE organization_id=p_org AND user_id=actor AND revoked_at IS NULL;
+ IF FOUND THEN RAISE EXCEPTION 'ALREADY_MEMBER' USING ERRCODE='P0409';END IF;
+ INSERT INTO public.memberships(organization_id,user_id,role) VALUES(p_org,actor,invitation.role) ON CONFLICT(organization_id,user_id) DO UPDATE SET role=EXCLUDED.role,revoked_at=NULL RETURNING id INTO member;
+ DELETE FROM public.location_access WHERE organization_id=p_org AND membership_id=member;
+ INSERT INTO public.location_access(organization_id,membership_id,property_id) SELECT p_org,member,property_id FROM public.invitation_locations WHERE organization_id=p_org AND invitation_id=p_invitation;
+ UPDATE public.invitations SET state='accepted',accepted_by=actor,accepted_at=now() WHERE id=p_invitation;
+ INSERT INTO public.audit_logs(organization_id,actor_id,action,object_id,details) VALUES(p_org,actor,'invitation.accepted',p_invitation,jsonb_build_object('membershipId',member,'role',invitation.role));
+ RETURN member;
+END $$;
+REVOKE ALL ON FUNCTION accept_staff_invitation(uuid,uuid,text) FROM PUBLIC;GRANT EXECUTE ON FUNCTION accept_staff_invitation(uuid,uuid,text) TO kost_app;
+CREATE FUNCTION mutate_staff_membership(p_org uuid,p_member uuid,p_role text,p_properties uuid[],p_revoke boolean,p_reason text) RETURNS void LANGUAGE plpgsql SECURITY DEFINER SET search_path=pg_catalog,public AS $$
+DECLARE current_member public.memberships%ROWTYPE;actor uuid:=public.current_actor();
+BEGIN
+ PERFORM pg_advisory_xact_lock(hashtextextended('staff:'||p_org::text,0));
+ IF p_org IS DISTINCT FROM public.current_org() OR NOT public.is_org_owner(p_org) THEN RAISE EXCEPTION 'NOT_FOUND' USING ERRCODE='P0404';END IF;
+ IF length(trim(p_reason))<3 OR length(p_reason)>500 THEN RAISE EXCEPTION 'VALIDATION_ERROR' USING ERRCODE='P0422';END IF;
+ SELECT * INTO current_member FROM public.memberships WHERE organization_id=p_org AND id=p_member AND revoked_at IS NULL FOR UPDATE;
+ IF NOT FOUND THEN RAISE EXCEPTION 'NOT_FOUND' USING ERRCODE='P0404';END IF;
+ IF NOT p_revoke THEN
+ IF p_role NOT IN ('Owner','Manager','Finance','Operations') OR p_properties IS NULL OR cardinality(p_properties)>1000 OR (p_role='Owner' AND cardinality(p_properties)<>0) OR (p_role<>'Owner' AND cardinality(p_properties)=0) THEN RAISE EXCEPTION 'VALIDATION_ERROR' USING ERRCODE='P0422';END IF;
+ IF EXISTS(SELECT 1 FROM unnest(p_properties) p(id) WHERE NOT EXISTS(SELECT 1 FROM public.properties WHERE organization_id=p_org AND id=p.id)) THEN RAISE EXCEPTION 'NOT_FOUND' USING ERRCODE='P0404';END IF;
+ UPDATE public.memberships SET role=p_role WHERE id=p_member;
+ DELETE FROM public.location_access WHERE organization_id=p_org AND membership_id=p_member;
+ INSERT INTO public.location_access(organization_id,membership_id,property_id) SELECT p_org,p_member,id FROM (SELECT DISTINCT unnest(p_properties) AS id) p;
+ ELSE UPDATE public.memberships SET revoked_at=now() WHERE id=p_member; END IF;
+ INSERT INTO public.audit_logs(organization_id,actor_id,action,object_id,details) VALUES(p_org,actor,CASE WHEN p_revoke THEN 'membership.revoked' ELSE 'membership.scope_changed' END,p_member,jsonb_build_object('reason',p_reason,'oldRole',current_member.role,'newRole',CASE WHEN p_revoke THEN NULL ELSE p_role END,'propertyIds',p_properties));
+END $$;
+REVOKE ALL ON FUNCTION mutate_staff_membership(uuid,uuid,text,uuid[],boolean,text) FROM PUBLIC;GRANT EXECUTE ON FUNCTION mutate_staff_membership(uuid,uuid,text,uuid[],boolean,text) TO kost_app;
+CREATE FUNCTION immutable_membership_identity() RETURNS trigger LANGUAGE plpgsql AS $$BEGIN IF NEW.id<>OLD.id OR NEW.organization_id<>OLD.organization_id OR NEW.user_id<>OLD.user_id THEN RAISE EXCEPTION 'IMMUTABLE_MEMBERSHIP_IDENTITY' USING ERRCODE='23514';END IF;RETURN NEW;END $$;
+CREATE TRIGGER membership_identity BEFORE UPDATE ON memberships FOR EACH ROW EXECUTE FUNCTION immutable_membership_identity();
+
+CREATE POLICY invitation_email_owner_read ON invitation_email_outbox FOR SELECT TO kost_app USING(organization_id=current_org() AND is_org_owner(organization_id));
+GRANT SELECT(id,organization_id,invitation_id,sent_at,failed_at,attempts) ON invitation_email_outbox TO kost_app;

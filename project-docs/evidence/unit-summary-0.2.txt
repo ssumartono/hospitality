@@ -1,0 +1,5 @@
+Build: 0.2.0 development
+Command: npm test
+Result: PASS 5; FAIL 0
+Argon2id salts/password verification; 256-bit token primitive; private MIME/size validation; AES-GCM randomized IV/AAD/tamper; RFC6238 TOTP vector/window.
+Not production acceptance.

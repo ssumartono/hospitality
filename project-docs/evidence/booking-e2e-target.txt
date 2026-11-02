@@ -1,0 +1,110 @@
+
+> kost-hospitality@0.5.0 test:e2e
+> tsx scripts/prepare-e2e.ts && playwright test --grep staff booking readiness
+
+Applied 017_booking_invoice.sql
+Applied 018_initial_readiness.sql
+Applied 019_booking_worker.sql
+Applied 020_booking_integrity.sql
+Applied 021_worker_audit.sql
+TEST_ONLY development plan configured; new assignments: 0; existing entitlements preserved.
+Encrypted legacy outbox rows: 0; no token values logged.
+Encrypted-only outbox constraint validated; application/worker roles restricted.
+node.exe : [WebServer] (node:22156) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+At line:1 char:1
++ & "C:\Program Files\nodejs/node.exe" "C:\Users\62811\AppData\Roaming\ ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: ([WebServer] (no... env being set.:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:15420) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:6908) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:21600) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 2 tests using 1 worker
+
+(node:16860) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  1 [desktop] › tests\e2e\booking.spec.ts:118:1 › staff booking readiness quote request approval invoice and in-app persist without fake payment (11.3s)
+(node:23836) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  2 [mobile] › tests\e2e\booking.spec.ts:118:1 › staff booking readiness quote request approval invoice and in-app persist without fake payment (10.4s)
+
+
+  1) [desktop] › tests\e2e\booking.spec.ts:118:1 › staff booking readiness quote request approval invoice and in-app persist without fake payment 
+
+    Error: expect(locator).toContainText(expected) failed
+
+    Locator: locator('#booking-section').locator('.room-card').filter({ has: getByRole('heading', { name: 'INV-00000001', exact: true }) })
+    Expected substring: "penerimaan terverifikasi Rp0"
+    Received string:    "INV-00000001Calon Penghuni Sintetis · DiterbitkanTotal Rp 1.500.000; saldo Rp 1.500.000; penerimaan terverifikasi Rp 0Belum dibayar. Batas bayar 3/11/2026, 18.19.46 (Asia/Jakarta)Sewa: Rp 1.500.000"
+    Timeout: 5000ms
+
+    Call log:
+      - Expect "toContainText" locator('#booking-section').locator('.room-card').filter({ has: getByRole('heading', { name: 'INV-00000001', exact: true }) }) with timeout 5000ms
+      - waiting for locator('#booking-section').locator('.room-card').filter({ has: getByRole('heading', { name: 'INV-00000001', exact: true }) })
+        14 × locator resolved to <div class="room-card">…</div>
+           - unexpected value "INV-00000001Calon Penghuni Sintetis · DiterbitkanTotal Rp 1.500.000; saldo Rp 1.500.000; penerimaan terverifikasi Rp 0Belum dibayar. Batas bayar 3/11/2026, 18.19.46 (Asia/Jakarta)Sewa: Rp 1.500.000"
+
+
+      293 |         has: page.getByRole("heading", { name: "INV-00000001", exact: true }),
+      294 |       }),
+    > 295 |   ).toContainText("penerimaan terverifikasi Rp0");
+          |     ^
+      296 |   await expect
+      297 |     .poll(
+      298 |       async () => {
+        at C:\KostHospitality\tests\e2e\booking.spec.ts:295:5
+
+    Error Context: test-results\booking-staff-booking-read-d8d79-ersist-without-fake-payment-desktop\error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results\booking-staff-booking-read-d8d79-ersist-without-fake-payment-desktop\trace.zip
+    Usage:
+
+        npx playwright show-trace test-results\booking-staff-booking-read-d8d79-ersist-without-fake-payment-desktop\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  2) [mobile] › tests\e2e\booking.spec.ts:118:1 › staff booking readiness quote request approval invoice and in-app persist without fake payment 
+
+    Error: expect(locator).toContainText(expected) failed
+
+    Locator: locator('#booking-section').locator('.room-card').filter({ has: getByRole('heading', { name: 'INV-00000001', exact: true }) })
+    Expected substring: "penerimaan terverifikasi Rp0"
+    Received string:    "INV-00000001Calon Penghuni Sintetis · DiterbitkanTotal Rp 1.500.000; saldo Rp 1.500.000; penerimaan terverifikasi Rp 0Belum dibayar. Batas bayar 3/11/2026, 18.19.57 (Asia/Jakarta)Sewa: Rp 1.500.000"
+    Timeout: 5000ms
+
+    Call log:
+      - Expect "toContainText" locator('#booking-section').locator('.room-card').filter({ has: getByRole('heading', { name: 'INV-00000001', exact: true }) }) with timeout 5000ms
+      - waiting for locator('#booking-section').locator('.room-card').filter({ has: getByRole('heading', { name: 'INV-00000001', exact: true }) })
+        14 × locator resolved to <div class="room-card">…</div>
+           - unexpected value "INV-00000001Calon Penghuni Sintetis · DiterbitkanTotal Rp 1.500.000; saldo Rp 1.500.000; penerimaan terverifikasi Rp 0Belum dibayar. Batas bayar 3/11/2026, 18.19.57 (Asia/Jakarta)Sewa: Rp 1.500.000"
+
+
+      293 |         has: page.getByRole("heading", { name: "INV-00000001", exact: true }),
+      294 |       }),
+    > 295 |   ).toContainText("penerimaan terverifikasi Rp0");
+          |     ^
+      296 |   await expect
+      297 |     .poll(
+      298 |       async () => {
+        at C:\KostHospitality\tests\e2e\booking.spec.ts:295:5
+
+    Error Context: test-results\booking-staff-booking-read-d8d79-ersist-without-fake-payment-mobile\error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results\booking-staff-booking-read-d8d79-ersist-without-fake-payment-mobile\trace.zip
+    Usage:
+
+        npx playwright show-trace test-results\booking-staff-booking-read-d8d79-ersist-without-fake-payment-mobile\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  2 failed
+    [desktop] › tests\e2e\booking.spec.ts:118:1 › staff booking readiness quote request approval invoice and in-app persist without fake payment 
+    [mobile] › tests\e2e\booking.spec.ts:118:1 › staff booking readiness quote request approval invoice and in-app persist without fake payment 

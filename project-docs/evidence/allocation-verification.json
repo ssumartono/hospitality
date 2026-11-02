@@ -1,0 +1,43 @@
+{
+  "recordedAt": "2026-11-02T08:37:28.520Z",
+  "build": "0.5.0",
+  "buildPassed": true,
+  "unit": {
+    "passed": 15,
+    "failed": 0
+  },
+  "integration": {
+    "passed": 36,
+    "failed": 0,
+    "database": "kost_test"
+  },
+  "e2e": {
+    "passed": 12,
+    "failed": 0,
+    "reportedDuration": "1.3m",
+    "database": "kost_e2e",
+    "viewports": [
+      1280,
+      360
+    ]
+  },
+  "dataPreservation": {
+    "matched": true,
+    "tables": 9,
+    "scope": "All columns of organizations,properties,rooms,room_types,room_type_versions,rate_policy_versions,policy_type_rates,policy_room_rates,pricing_quotes; hashes only",
+    "evidence": [
+      "user-data-allocation-before.json",
+      "user-data-allocation-after.json"
+    ]
+  },
+  "npmAuditVulnerabilities": 0,
+  "baselineFiles": 22,
+  "baselineMismatches": 0,
+  "limitations": [
+    "No booking accept/invoice/payment/check-in API",
+    "SQL hold/lease/presence fixtures are isolated admin-created test data, not full booking acceptance evidence",
+    "No mark-ready/archive final or completed turnover blockers",
+    "Full60AC and G1-G8 incomplete"
+  ],
+  "productionReady": false
+}

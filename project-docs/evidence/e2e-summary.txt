@@ -1,0 +1,8 @@
+Command: npm run test:e2e
+Chromium channel: chromium
+Database: kost_e2e, SMTP sink: Mailpit
+Final result: 2 passed (12.1s)
+Desktop: 1280x900; Mobile: 360x800
+Flow: register -> actual SMTP email -> verify -> login -> organization -> property -> reload persistence -> logout
+No page horizontal overflow at 360px. Screenshots visually inspected after CSS correction.
+This is foundation E2E only, not full business acceptance.

@@ -1,0 +1,32 @@
+name: kost-hospitality-dev
+services:
+  postgres:
+    image: postgres:17-alpine@sha256:266d3c257594e195b309ae9d1805e54c788f1d7b375f56bf6c367aac6c917e7b
+    environment:
+      POSTGRES_USER: kost
+      POSTGRES_PASSWORD: local-migration-only
+      POSTGRES_DB: kost
+    ports: ["127.0.0.1:5432:5432"]
+    volumes: ["postgres-data:/var/lib/postgresql/data"]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U kost -d kost"]
+      interval: 3s
+      retries: 20
+  mailpit:
+    image: axllent/mailpit:v1.27.8@sha256:6abc8e633df15eaf785cfcf38bae48e66f64beecdc03121e249d0f9ec15f0707
+    ports: ["127.0.0.1:1025:1025", "127.0.0.1:8025:8025"]
+  object-storage:
+    image: chrislusf/seaweedfs:4.51@sha256:f7a49e3f3972ebed5be2ed4befa4a0c68eb7bdddba6e692d42729ceb545134b8
+    command: mini -dir=/data -s3.port=8333 -s3.config=/etc/seaweedfs/s3.json
+    ports: ["127.0.0.1:9000:8333"]
+    volumes:
+      ["objects:/data", "./infra/s3.local.json:/etc/seaweedfs/s3.json:ro"]
+  clamd:
+    image: clamav/clamav:stable
+    profiles: ["scan"]
+    ports: ["127.0.0.1:3310:3310"]
+    volumes: ["clamav-data:/var/lib/clamav"]
+volumes:
+  objects:
+  clamav-data:
+  postgres-data:

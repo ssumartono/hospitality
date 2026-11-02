@@ -1,0 +1,9 @@
+{
+  "fixture": "TEST_ONLY_NOT_PRODUCTION",
+  "code": "local-development-v1",
+  "label": "Paket pengembangan lokal",
+  "roomLimit": 100,
+  "propertyLimit": 10,
+  "staffLimit": 100,
+  "priceIdr": null
+}

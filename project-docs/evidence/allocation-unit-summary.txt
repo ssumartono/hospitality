@@ -1,0 +1,6 @@
+KostHospitality0.5.0
+Command: npm test
+PASS15 FAIL0
+Security5, inventory3, pricing5, allocation2.
+Allocation: exclusive interval endpoints/null infinity and invalid dates/reason/version rejection.
+Not full operational acceptance; see IMPLEMENTATION_STATUS.md.

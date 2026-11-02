@@ -1,0 +1,29 @@
+
+> kost-hospitality@0.2.0 test:e2e
+> tsx scripts/prepare-e2e.ts && playwright test
+
+Encrypted legacy outbox rows: 0; no token values logged.
+Encrypted-only outbox constraint validated; application/worker roles restricted.
+[WebServer] (node:8176) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:2192) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:10608) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:16276) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 6 tests using 1 worker
+
+(node:12220) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 1 [desktop] › tests\e2e\account-staff.spec.ts:71:1 › account MFA enrollment, recovery login and disable work through the UI (3.8s)
+  ok 2 [desktop] › tests\e2e\account-staff.spec.ts:129:1 › Owner invites staff, changes location scope and revokes access through the UI (7.5s)
+  ok 3 [desktop] › tests\e2e\foundation.spec.ts:3:1 › owner registers, verifies email through SMTP, creates organization and location (2.5s)
+(node:19296) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 4 [mobile] › tests\e2e\account-staff.spec.ts:71:1 › account MFA enrollment, recovery login and disable work through the UI (3.3s)
+  ok 5 [mobile] › tests\e2e\account-staff.spec.ts:129:1 › Owner invites staff, changes location scope and revokes access through the UI (6.1s)
+  ok 6 [mobile] › tests\e2e\foundation.spec.ts:3:1 › owner registers, verifies email through SMTP, creates organization and location (2.5s)
+
+  6 passed (32.8s)

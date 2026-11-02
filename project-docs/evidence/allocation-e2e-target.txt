@@ -1,0 +1,34 @@
+
+> kost-hospitality@0.4.0 test:e2e
+> tsx scripts/prepare-e2e.ts && playwright test --grep operational block
+
+Applied 015_allocations_presence.sql
+Applied 016_block_constraint_record.sql
+TEST_ONLY development plan configured; new assignments: 0; existing entitlements preserved.
+Encrypted legacy outbox rows: 0; no token values logged.
+Encrypted-only outbox constraint validated; application/worker roles restricted.
+node.exe : [WebServer] (node:10008) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+At line:1 char:1
++ & "C:\Program Files\nodejs/node.exe" "C:\Users\62811\AppData\Roaming\ ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: ([WebServer] (no... env being set.:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:23584) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:21252) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:18068) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 2 tests using 1 worker
+
+(node:24476) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 1 [desktop] › tests\e2e\allocation.spec.ts:118:1 › operational block persists, overlap fails, release preserves history and inspection condition (8.1s)
+(node:23732) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 2 [mobile] › tests\e2e\allocation.spec.ts:118:1 › operational block persists, overlap fails, release preserves history and inspection condition (7.0s)
+
+  2 passed (23.2s)

@@ -1,0 +1,32 @@
+
+> kost-hospitality@0.2.0 test:integration
+> tsx scripts/integration.ts
+
+Encrypted legacy outbox rows: 0; no token values logged.
+Encrypted-only outbox constraint validated; application/worker roles restricted.
+Private bucket available: kost-test-private
+✔ MFA enrollment, anti-replay, challenge gating, recovery and disable preserve account security (1455.1488ms)
+✔ invitation establishes scoped membership, is retry-safe, and scope/revoke take effect on next request (1724.1136ms)
+✔ invitation guards verified email, expiry, revocation and cross-tenant location IDs (2661.9947ms)
+✔ manual staff changes cannot remove last Owner, including concurrent API revocations (1235.9621ms)
+✔ restricted worker sends real invitation to local SMTP and cannot read tenant records/passwords (1147.5613ms)
+✔ role/location matrix and private-file access are reevaluated immediately after revoke (3850.664ms)
+✔ MFA challenge has bounded attempts and server-enforced expiry (1036.8234ms)
+✔ normal API retains registration throttling despite E2E fixture override option (790.1339ms)
+✔ unverified account can request a fresh verification email without reusing the old token (358.5416ms)
+✔ reauth token expires and is bound to the original authenticated session (1040.215ms)
+✔ foundation API: real persistence, tenant denial, CSRF, token reuse and logout (855.8802ms)
+✔ database role cannot bypass RLS and unscoped tenant queries return no data (9.0997ms)
+✔ SMTP outbox delivers to local sink and does not claim production delivery (302.4498ms)
+✔ idempotency serializes two database connections and rolls back faulted mutations (385.7798ms)
+✔ private S3 files stay quarantined when scanner unavailable and deny anonymous/cross-tenant downloads (441.1779ms)
+✔ password reset is single-use, revokes sessions and never logs the user in (746.9366ms)
+✔ database protects last Owner even when two revocations race (388.6232ms)
+ℹ tests 17
+ℹ suites 0
+ℹ pass 17
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 16648.1296

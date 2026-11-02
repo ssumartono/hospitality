@@ -1,0 +1,5 @@
+KostHospitality0.4.0 — 2 November2026
+Command: npm test
+PASS13, FAIL0
+Security5 + inventory3 + pricing5. Pricing: F01/F02 totals, F04 actual calendar, F05 anniversary/leap, AC32 fees/deposit, F10 rent fragments, rounding/discount bounds, dates/zones and validation.
+Not full production acceptance. See tests/pricing.domain.test.ts and IMPLEMENTATION_STATUS.md.

@@ -1,0 +1,13 @@
+node_modules/
+dist/
+.env
+*.log
+backups/
+test-results/
+playwright-report/
+.env.*
+!.env.example
+.local/
+
+# Private operational preservation fingerprints remain local
+project-docs/evidence/user-data*.json

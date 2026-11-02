@@ -1,0 +1,55 @@
+{
+  "application_version_target": "1.0.0",
+  "document_revision": "1.1",
+  "status": "CONFIGURATION_REQUIRED_BEFORE_GO_LIVE",
+  "organization_name": "Kost Hospitality",
+  "property": {
+    "city": "Palembang",
+    "timezone": "Asia/Jakarta",
+    "segment": [
+      "Mahasiswi",
+      "Karyawati"
+    ],
+    "floors": 2,
+    "initial_room_count": 12,
+    "bathroom": "inside_room",
+    "electricity": "prepaid_per_room",
+    "initial_room_condition": "inspection",
+    "seed_distribution_note": "Pembagian 6 kamar per lantai dan kode 101–206 hanya seed; validasi terhadap denah aktual sebelum go-live."
+  },
+  "deposit": {
+    "enabled": false,
+    "amount_idr": 0
+  },
+  "owner_must_configure": {
+    "monthly_rent_idr": null,
+    "room_furniture": null,
+    "air_conditioning": null,
+    "bank_account": null,
+    "booking_minimum_idr": null,
+    "checkin_minimum_percent": null,
+    "billing_cycle": null,
+    "notice_days": null,
+    "cancellation_refund_policy": null,
+    "identity_retention_policy": null,
+    "transaction_retention_policy": null,
+    "public_contact": null,
+    "public_photos": null,
+    "final_agreement": null
+  },
+  "engineering_defaults": {
+    "hold_hours": 24,
+    "review_extension_hours": 24,
+    "invoice_lead_days": 7,
+    "reminder_days_before_due": [
+      3,
+      0,
+      -3
+    ],
+    "penalty_enabled": false,
+    "refund_approval_role": "Owner",
+    "payment_method": "manual_transfer",
+    "saas_billing": "manual",
+    "currency": "IDR"
+  }
+}

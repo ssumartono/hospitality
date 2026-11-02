@@ -1,0 +1,31 @@
+{
+  "date": "2026-11-02T00:20:14.170Z",
+  "build": "0.3.0",
+  "buildPassed": true,
+  "unit": {
+    "passed": 8,
+    "failed": 0
+  },
+  "integration": {
+    "passed": 26,
+    "failed": 0,
+    "database": "kost_test"
+  },
+  "e2e": {
+    "passed": 8,
+    "failed": 0,
+    "seconds": 48.8,
+    "projects": [
+      "desktop1280",
+      "mobile360"
+    ],
+    "database": "kost_e2e"
+  },
+  "npmAuditVulnerabilities": 0,
+  "userOrganizationPropertyFingerprint": "MATCH",
+  "baselineFiles": 22,
+  "baselineMismatches": 0,
+  "productionReady": false,
+  "seedCliActualUserRun": "NOT RUN",
+  "fullAcceptanceAndGates": "NOT COMPLETE"
+}

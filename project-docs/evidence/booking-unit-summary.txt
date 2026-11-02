@@ -1,0 +1,5 @@
+KostHospitality0.6.0
+Command: npm test
+PASS15 FAIL0
+Security5, inventory3, pricing5, allocation2. New booking/invoice/readiness/worker rules tested in booking.integration.test.ts (full integration41).
+Not full production acceptance.

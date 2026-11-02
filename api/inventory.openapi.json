@@ -1,0 +1,3358 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Kost Hospitality — implemented inventory API",
+    "version": "0.3.0-dev",
+    "description": "Subset implementation B03/B16. New rooms inspection only. Checklist completion is not ready/availability. Development plan is synthetic, not valid for production."
+  },
+  "servers": [
+    {
+      "url": "/api/v1"
+    }
+  ],
+  "security": [
+    {
+      "SessionCookie": []
+    }
+  ],
+  "paths": {
+    "/organizations/{org}/properties/{id}": {
+      "get": {
+        "operationId": "getPropertyProfile",
+        "description": "Scoped active membership. Existing drafts may have null configuration fields.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "org",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "city": {
+                      "type": "string"
+                    },
+                    "timezone": {
+                      "type": "string"
+                    },
+                    "code": {
+                      "type": ["string", "null"]
+                    },
+                    "floors": {
+                      "type": ["integer", "null"],
+                      "minimum": 1
+                    },
+                    "segment": {
+                      "type": ["string", "null"]
+                    },
+                    "address": {
+                      "type": ["string", "null"]
+                    },
+                    "contactPhone": {
+                      "type": ["string", "null"]
+                    },
+                    "contactEmail": {
+                      "type": ["string", "null"]
+                    },
+                    "version": {
+                      "type": "integer",
+                      "minimum": 1,
+                      "maximum": 2147483647
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "name",
+                    "city",
+                    "timezone",
+                    "code",
+                    "floors",
+                    "segment",
+                    "address",
+                    "contactPhone",
+                    "contactEmail",
+                    "version"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Safe domain error; codes include QUOTA_EXCEEDED, SUBSCRIPTION_RESTRICTED, VERSION_CONFLICT, PREVIEW_INVALID/EXPIRED/ALREADY_COMMITTED, PROPERTY_CONFIGURATION_REQUIRED and DUPLICATE_ROOM_CODE.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Safe domain error; codes include QUOTA_EXCEEDED, SUBSCRIPTION_RESTRICTED, VERSION_CONFLICT, PREVIEW_INVALID/EXPIRED/ALREADY_COMMITTED, PROPERTY_CONFIGURATION_REQUIRED and DUPLICATE_ROOM_CODE.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Safe domain error; codes include QUOTA_EXCEEDED, SUBSCRIPTION_RESTRICTED, VERSION_CONFLICT, PREVIEW_INVALID/EXPIRED/ALREADY_COMMITTED, PROPERTY_CONFIGURATION_REQUIRED and DUPLICATE_ROOM_CODE.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Safe domain error; codes include QUOTA_EXCEEDED, SUBSCRIPTION_RESTRICTED, VERSION_CONFLICT, PREVIEW_INVALID/EXPIRED/ALREADY_COMMITTED, PROPERTY_CONFIGURATION_REQUIRED and DUPLICATE_ROOM_CODE.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Safe domain error; codes include QUOTA_EXCEEDED, SUBSCRIPTION_RESTRICTED, VERSION_CONFLICT, PREVIEW_INVALID/EXPIRED/ALREADY_COMMITTED, PROPERTY_CONFIGURATION_REQUIRED and DUPLICATE_ROOM_CODE.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Safe domain error; codes include QUOTA_EXCEEDED, SUBSCRIPTION_RESTRICTED, VERSION_CONFLICT, PREVIEW_INVALID/EXPIRED/ALREADY_COMMITTED, PROPERTY_CONFIGURATION_REQUIRED and DUPLICATE_ROOM_CODE.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Safe domain error; codes include QUOTA_EXCEEDED, SUBSCRIPTION_RESTRICTED, VERSION_CONFLICT, PREVIEW_INVALID/EXPIRED/ALREADY_COMMITTED, PROPERTY_CONFIGURATION_REQUIRED and DUPLICATE_ROOM_CODE.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Safe domain error; codes include QUOTA_EXCEEDED, SUBSCRIPTION_RESTRICTED, VERSION_CONFLICT, PREVIEW_INVALID/EXPIRED/ALREADY_COMMITTED, PROPERTY_CONFIGURATION_REQUIRED and DUPLICATE_ROOM_CODE.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/organizations/{org}/properties/{id}/profile": {
+      "post": {
+        "operationId": "updatePropertyProfile",
+        "description": "Owner only. Optimistic version; cannot reduce floors below any historical room floor. Does not change existing name/city/timezone.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "org",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "in": "header",
+            "name": "Origin",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-CSRF-Token",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "Idempotency-Key",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 16,
+              "maxLength": 128
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "city": {
+                      "type": "string"
+                    },
+                    "timezone": {
+                      "type": "string"
+                    },
+                    "code": {
+                      "type": ["string", "null"]
+                    },
+                    "floors": {
+                      "type": ["integer", "null"],
+                      "minimum": 1
+                    },
+                    "segment": {
+                      "type": ["string", "null"]
+                    },
+                    "address": {
+                      "type": ["string", "null"]
+                    },
+                    "contactPhone": {
+                      "type": ["string", "null"]
+                    },
+                    "contactEmail": {
+                      "type": ["string", "null"]
+                    },
+                    "version": {
+                      "type": "integer",
+                      "minimum": 1,
+                      "maximum": 2147483647
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "name",
+                    "city",
+                    "timezone",
+                    "code",
+                    "floors",
+                    "segment",
+                    "address",
+                    "contactPhone",
+                    "contactEmail",
+                    "version"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Safe domain error; codes include QUOTA_EXCEEDED, SUBSCRIPTION_RESTRICTED, VERSION_CONFLICT, PREVIEW_INVALID/EXPIRED/ALREADY_COMMITTED, PROPERTY_CONFIGURATION_REQUIRED and DUPLICATE_ROOM_CODE.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Safe domain error; codes include QUOTA_EXCEEDED, SUBSCRIPTION_RESTRICTED, VERSION_CONFLICT, PREVIEW_INVALID/EXPIRED/ALREADY_COMMITTED, PROPERTY_CONFIGURATION_REQUIRED and DUPLICATE_ROOM_CODE.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Safe domain error; codes include QUOTA_EXCEEDED, SUBSCRIPTION_RESTRICTED, VERSION_CONFLICT, PREVIEW_INVALID/EXPIRED/ALREADY_COMMITTED, PROPERTY_CONFIGURATION_REQUIRED and DUPLICATE_ROOM_CODE.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Safe domain error; codes include QUOTA_EXCEEDED, SUBSCRIPTION_RESTRICTED, VERSION_CONFLICT, PREVIEW_INVALID/EXPIRED/ALREADY_COMMITTED, PROPERTY_CONFIGURATION_REQUIRED and DUPLICATE_ROOM_CODE.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Safe domain error; codes include QUOTA_EXCEEDED, SUBSCRIPTION_RESTRICTED, VERSION_CONFLICT, PREVIEW_INVALID/EXPIRED/ALREADY_COMMITTED, PROPERTY_CONFIGURATION_REQUIRED and DUPLICATE_ROOM_CODE.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Safe domain error; codes include QUOTA_EXCEEDED, SUBSCRIPTION_RESTRICTED, VERSION_CONFLICT, PREVIEW_INVALID/EXPIRED/ALREADY_COMMITTED, PROPERTY_CONFIGURATION_REQUIRED and DUPLICATE_ROOM_CODE.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Safe domain error; codes include QUOTA_EXCEEDED, SUBSCRIPTION_RESTRICTED, VERSION_CONFLICT, PREVIEW_INVALID/EXPIRED/ALREADY_COMMITTED, PROPERTY_CONFIGURATION_REQUIRED and DUPLICATE_ROOM_CODE.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Safe domain error; codes include QUOTA_EXCEEDED, SUBSCRIPTION_RESTRICTED, VERSION_CONFLICT, PREVIEW_INVALID/EXPIRED/ALREADY_COMMITTED, PROPERTY_CONFIGURATION_REQUIRED and DUPLICATE_ROOM_CODE.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "version": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 2147483647
+                  },
+                  "code": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 32
+                  },
+                  "floors": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 2147483647
+                  },
+                  "segment": {
+                    "type": "string",
+                    "enum": ["Mahasiswi", "Karyawati", "Mahasiswi & karyawati"]
+                  },
+                  "address": {
+                    "type": ["string", "null"],
+                    "maxLength": 1000
+                  },
+                  "contactPhone": {
+                    "type": ["string", "null"],
+                    "maxLength": 60
+                  },
+                  "contactEmail": {
+                    "type": ["string", "null"],
+                    "maxLength": 254
+                  }
+                },
+                "required": ["version", "code", "floors", "segment"]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/organizations/{org}/room-types": {
+      "get": {
+        "operationId": "listRoomTypes",
+        "description": "",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "org",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "propertyId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "after",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 25
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "properties": {
+                          "id": {
+                            "type": "string",
+                            "format": "uuid"
+                          },
+                          "propertyId": {
+                            "type": "string",
+                            "format": "uuid"
+                          },
+                          "name": {
+                            "type": "string"
+                          },
+                          "defaultCapacity": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "maximum": 2147483647
+                          },
+                          "defaultFacilities": {
+                            "type": "array",
+                            "items": {
+                              "type": "string",
+                              "minLength": 1,
+                              "maxLength": 80
+                            },
+                            "maxItems": 50,
+                            "uniqueItems": true
+                          },
+                          "version": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "maximum": 2147483647
+                          }
+                        },
+                        "required": [
+                          "id",
+                          "propertyId",
+                          "name",
+                          "defaultCapacity",
+                          "defaultFacilities",
+                          "version"
+                        ]
+                      },
+                      "maxItems": 100
+                    },
+                    "nextCursor": {
+                      "type": ["string", "null"],
+                      "format": "uuid"
+                    }
+                  },
+                  "required": ["items", "nextCursor"]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Safe domain error; codes include QUOTA_EXCEEDED, SUBSCRIPTION_RESTRICTED, VERSION_CONFLICT, PREVIEW_INVALID/EXPIRED/ALREADY_COMMITTED, PROPERTY_CONFIGURATION_REQUIRED and DUPLICATE_ROOM_CODE.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Safe domain error; codes include QUOTA_EXCEEDED, SUBSCRIPTION_RESTRICTED, VERSION_CONFLICT, PREVIEW_INVALID/EXPIRED/ALREADY_COMMITTED, PROPERTY_CONFIGURATION_REQUIRED and DUPLICATE_ROOM_CODE.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Safe domain error; codes include QUOTA_EXCEEDED, SUBSCRIPTION_RESTRICTED, VERSION_CONFLICT, PREVIEW_INVALID/EXPIRED/ALREADY_COMMITTED, PROPERTY_CONFIGURATION_REQUIRED and DUPLICATE_ROOM_CODE.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Safe domain error; codes include QUOTA_EXCEEDED, SUBSCRIPTION_RESTRICTED, VERSION_CONFLICT, PREVIEW_INVALID/EXPIRED/ALREADY_COMMITTED, PROPERTY_CONFIGURATION_REQUIRED and DUPLICATE_ROOM_CODE.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Safe domain error; codes include QUOTA_EXCEEDED, SUBSCRIPTION_RESTRICTED, VERSION_CONFLICT, PREVIEW_INVALID/EXPIRED/ALREADY_COMMITTED, PROPERTY_CONFIGURATION_REQUIRED and DUPLICATE_ROOM_CODE.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Safe domain error; codes include QUOTA_EXCEEDED, SUBSCRIPTION_RESTRICTED, VERSION_CONFLICT, PREVIEW_INVALID/EXPIRED/ALREADY_COMMITTED, PROPERTY_CONFIGURATION_REQUIRED and DUPLICATE_ROOM_CODE.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Safe domain error; codes include QUOTA_EXCEEDED, SUBSCRIPTION_RESTRICTED, VERSION_CONFLICT, PREVIEW_INVALID/EXPIRED/ALREADY_COMMITTED, PROPERTY_CONFIGURATION_REQUIRED and DUPLICATE_ROOM_CODE.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Safe domain error; codes include QUOTA_EXCEEDED, SUBSCRIPTION_RESTRICTED, VERSION_CONFLICT, PREVIEW_INVALID/EXPIRED/ALREADY_COMMITTED, PROPERTY_CONFIGURATION_REQUIRED and DUPLICATE_ROOM_CODE.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "createRoomType",
+        "description": "Owner or Manager of property. Defaults versioned; no automatic propagation to existing rooms.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "org",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "in": "header",
+            "name": "Origin",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-CSRF-Token",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "Idempotency-Key",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 16,
+              "maxLength": 128
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "propertyId": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "defaultCapacity": {
+                      "type": "integer",
+                      "minimum": 1,
+                      "maximum": 2147483647
+                    },
+                    "defaultFacilities": {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 80
+                      },
+                      "maxItems": 50,
+                      "uniqueItems": true
+                    },
+                    "version": {
+                      "type": "integer",
+                      "minimum": 1,
+                      "maximum": 2147483647
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "propertyId",
+                    "name",
+                    "defaultCapacity",
+                    "defaultFacilities",
+                    "version"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Safe domain error; codes include QUOTA_EXCEEDED, SUBSCRIPTION_RESTRICTED, VERSION_CONFLICT, PREVIEW_INVALID/EXPIRED/ALREADY_COMMITTED, PROPERTY_CONFIGURATION_REQUIRED and DUPLICATE_ROOM_CODE.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Safe domain error; codes include QUOTA_EXCEEDED, SUBSCRIPTION_RESTRICTED, VERSION_CONFLICT, PREVIEW_INVALID/EXPIRED/ALREADY_COMMITTED, PROPERTY_CONFIGURATION_REQUIRED and DUPLICATE_ROOM_CODE.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Safe domain error; codes include QUOTA_EXCEEDED, SUBSCRIPTION_RESTRICTED, VERSION_CONFLICT, PREVIEW_INVALID/EXPIRED/ALREADY_COMMITTED, PROPERTY_CONFIGURATION_REQUIRED and DUPLICATE_ROOM_CODE.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Safe domain error; codes include QUOTA_EXCEEDED, SUBSCRIPTION_RESTRICTED, VERSION_CONFLICT, PREVIEW_INVALID/EXPIRED/ALREADY_COMMITTED, PROPERTY_CONFIGURATION_REQUIRED and DUPLICATE_ROOM_CODE.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Safe domain error; codes include QUOTA_EXCEEDED, SUBSCRIPTION_RESTRICTED, VERSION_CONFLICT, PREVIEW_INVALID/EXPIRED/ALREADY_COMMITTED, PROPERTY_CONFIGURATION_REQUIRED and DUPLICATE_ROOM_CODE.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Safe domain error; codes include QUOTA_EXCEEDED, SUBSCRIPTION_RESTRICTED, VERSION_CONFLICT, PREVIEW_INVALID/EXPIRED/ALREADY_COMMITTED, PROPERTY_CONFIGURATION_REQUIRED and DUPLICATE_ROOM_CODE.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Safe domain error; codes include QUOTA_EXCEEDED, SUBSCRIPTION_RESTRICTED, VERSION_CONFLICT, PREVIEW_INVALID/EXPIRED/ALREADY_COMMITTED, PROPERTY_CONFIGURATION_REQUIRED and DUPLICATE_ROOM_CODE.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Safe domain error; codes include QUOTA_EXCEEDED, SUBSCRIPTION_RESTRICTED, VERSION_CONFLICT, PREVIEW_INVALID/EXPIRED/ALREADY_COMMITTED, PROPERTY_CONFIGURATION_REQUIRED and DUPLICATE_ROOM_CODE.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "propertyId": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "name": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 100
+                  },
+                  "defaultCapacity": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 2147483647
+                  },
+                  "defaultFacilities": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 80
+                    },
+                    "maxItems": 50,
+                    "uniqueItems": true
+                  }
+                },
+                "required": ["propertyId", "name", "defaultCapacity"]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/organizations/{org}/rooms": {
+      "get": {
+        "operationId": "listRooms",
+        "description": "",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "org",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "propertyId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "after",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 25
+            }
+          },
+          {
+            "name": "search",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "maxLength": 32
+            }
+          },
+          {
+            "name": "state",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "inspection",
+                "ready",
+                "dirty",
+                "maintenance",
+                "inactive"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "properties": {
+                          "id": {
+                            "type": "string",
+                            "format": "uuid"
+                          },
+                          "propertyId": {
+                            "type": "string",
+                            "format": "uuid"
+                          },
+                          "code": {
+                            "type": "string"
+                          },
+                          "floor": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "maximum": 2147483647
+                          },
+                          "typeId": {
+                            "type": "string",
+                            "format": "uuid"
+                          },
+                          "typeVersion": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "maximum": 2147483647
+                          },
+                          "capacity": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "maximum": 2147483647
+                          },
+                          "facilities": {
+                            "type": "array",
+                            "items": {
+                              "type": "string",
+                              "minLength": 1,
+                              "maxLength": 80
+                            },
+                            "maxItems": 50,
+                            "uniqueItems": true
+                          },
+                          "condition": {
+                            "type": "string",
+                            "enum": [
+                              "inspection",
+                              "ready",
+                              "dirty",
+                              "maintenance",
+                              "inactive"
+                            ]
+                          },
+                          "version": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "maximum": 2147483647
+                          },
+                          "typeName": {
+                            "type": "string"
+                          },
+                          "checklistVersion": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "maximum": 2147483647
+                          },
+                          "water": {
+                            "type": "boolean"
+                          },
+                          "electric": {
+                            "type": "boolean"
+                          },
+                          "lock": {
+                            "type": "boolean"
+                          },
+                          "furniture": {
+                            "type": "boolean"
+                          },
+                          "clean": {
+                            "type": "boolean"
+                          },
+                          "checklistRecordedAt": {
+                            "type": ["string", "null"],
+                            "format": "date-time"
+                          },
+                          "checklistComplete": {
+                            "type": "boolean"
+                          }
+                        },
+                        "required": [
+                          "id",
+                          "propertyId",
+                          "code",
+                          "floor",
+                          "typeId",
+                          "typeVersion",
+                          "capacity",
+                          "facilities",
+                          "condition",
+                          "version",
+                          "typeName",
+                          "checklistVersion",
+                          "water",
+                          "electric",
+                          "lock",
+                          "furniture",
+                          "clean",
+                          "checklistRecordedAt",
+                          "checklistComplete"
+                        ]
+                      },
+                      "maxItems": 100
+                    },
+                    "nextCursor": {
+                      "type": ["string", "null"],
+                      "format": "uuid"
+                    }
+                  },
+                  "required": ["items", "nextCursor"]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Safe domain error; codes include QUOTA_EXCEEDED, SUBSCRIPTION_RESTRICTED, VERSION_CONFLICT, PREVIEW_INVALID/EXPIRED/ALREADY_COMMITTED, PROPERTY_CONFIGURATION_REQUIRED and DUPLICATE_ROOM_CODE.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Safe domain error; codes include QUOTA_EXCEEDED, SUBSCRIPTION_RESTRICTED, VERSION_CONFLICT, PREVIEW_INVALID/EXPIRED/ALREADY_COMMITTED, PROPERTY_CONFIGURATION_REQUIRED and DUPLICATE_ROOM_CODE.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Safe domain error; codes include QUOTA_EXCEEDED, SUBSCRIPTION_RESTRICTED, VERSION_CONFLICT, PREVIEW_INVALID/EXPIRED/ALREADY_COMMITTED, PROPERTY_CONFIGURATION_REQUIRED and DUPLICATE_ROOM_CODE.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Safe domain error; codes include QUOTA_EXCEEDED, SUBSCRIPTION_RESTRICTED, VERSION_CONFLICT, PREVIEW_INVALID/EXPIRED/ALREADY_COMMITTED, PROPERTY_CONFIGURATION_REQUIRED and DUPLICATE_ROOM_CODE.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Safe domain error; codes include QUOTA_EXCEEDED, SUBSCRIPTION_RESTRICTED, VERSION_CONFLICT, PREVIEW_INVALID/EXPIRED/ALREADY_COMMITTED, PROPERTY_CONFIGURATION_REQUIRED and DUPLICATE_ROOM_CODE.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Safe domain error; codes include QUOTA_EXCEEDED, SUBSCRIPTION_RESTRICTED, VERSION_CONFLICT, PREVIEW_INVALID/EXPIRED/ALREADY_COMMITTED, PROPERTY_CONFIGURATION_REQUIRED and DUPLICATE_ROOM_CODE.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Safe domain error; codes include QUOTA_EXCEEDED, SUBSCRIPTION_RESTRICTED, VERSION_CONFLICT, PREVIEW_INVALID/EXPIRED/ALREADY_COMMITTED, PROPERTY_CONFIGURATION_REQUIRED and DUPLICATE_ROOM_CODE.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Safe domain error; codes include QUOTA_EXCEEDED, SUBSCRIPTION_RESTRICTED, VERSION_CONFLICT, PREVIEW_INVALID/EXPIRED/ALREADY_COMMITTED, PROPERTY_CONFIGURATION_REQUIRED and DUPLICATE_ROOM_CODE.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "createRoom",
+        "description": "Owner/assigned Manager. Missing capacity/facilities copy current type version. Requires configured property and atomic quota. Codes unique ignoring case including archives. Always inspection.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "org",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "in": "header",
+            "name": "Origin",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-CSRF-Token",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "Idempotency-Key",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 16,
+              "maxLength": 128
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "propertyId": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "code": {
+                      "type": "string"
+                    },
+                    "floor": {
+                      "type": "integer",
+                      "minimum": 1,
+                      "maximum": 2147483647
+                    },
+                    "typeId": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "typeVersion": {
+                      "type": "integer",
+                      "minimum": 1,
+                      "maximum": 2147483647
+                    },
+                    "capacity": {
+                      "type": "integer",
+                      "minimum": 1,
+                      "maximum": 2147483647
+                    },
+                    "facilities": {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 80
+                      },
+                      "maxItems": 50,
+                      "uniqueItems": true
+                    },
+                    "condition": {
+                      "type": "string",
+                      "enum": [
+                        "inspection",
+                        "ready",
+                        "dirty",
+                        "maintenance",
+                        "inactive"
+                      ]
+                    },
+                    "version": {
+                      "type": "integer",
+                      "minimum": 1,
+                      "maximum": 2147483647
+                    },
+                    "typeName": {
+                      "type": "string"
+                    },
+                    "checklistVersion": {
+                      "type": "integer",
+                      "minimum": 1,
+                      "maximum": 2147483647
+                    },
+                    "water": {
+                      "type": "boolean"
+                    },
+                    "electric": {
+                      "type": "boolean"
+                    },
+                    "lock": {
+                      "type": "boolean"
+                    },
+                    "furniture": {
+                      "type": "boolean"
+                    },
+                    "clean": {
+                      "type": "boolean"
+                    },
+                    "checklistRecordedAt": {
+                      "type": ["string", "null"],
+                      "format": "date-time"
+                    },
+                    "checklistComplete": {
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "propertyId",
+                    "code",
+                    "floor",
+                    "typeId",
+                    "typeVersion",
+                    "capacity",
+                    "facilities",
+                    "condition",
+                    "version",
+                    "typeName",
+                    "checklistVersion",
+                    "water",
+                    "electric",
+                    "lock",
+                    "furniture",
+                    "clean",
+                    "checklistRecordedAt",
+                    "checklistComplete"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Safe domain error; codes include QUOTA_EXCEEDED, SUBSCRIPTION_RESTRICTED, VERSION_CONFLICT, PREVIEW_INVALID/EXPIRED/ALREADY_COMMITTED, PROPERTY_CONFIGURATION_REQUIRED and DUPLICATE_ROOM_CODE.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Safe domain error; codes include QUOTA_EXCEEDED, SUBSCRIPTION_RESTRICTED, VERSION_CONFLICT, PREVIEW_INVALID/EXPIRED/ALREADY_COMMITTED, PROPERTY_CONFIGURATION_REQUIRED and DUPLICATE_ROOM_CODE.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Safe domain error; codes include QUOTA_EXCEEDED, SUBSCRIPTION_RESTRICTED, VERSION_CONFLICT, PREVIEW_INVALID/EXPIRED/ALREADY_COMMITTED, PROPERTY_CONFIGURATION_REQUIRED and DUPLICATE_ROOM_CODE.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Safe domain error; codes include QUOTA_EXCEEDED, SUBSCRIPTION_RESTRICTED, VERSION_CONFLICT, PREVIEW_INVALID/EXPIRED/ALREADY_COMMITTED, PROPERTY_CONFIGURATION_REQUIRED and DUPLICATE_ROOM_CODE.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Safe domain error; codes include QUOTA_EXCEEDED, SUBSCRIPTION_RESTRICTED, VERSION_CONFLICT, PREVIEW_INVALID/EXPIRED/ALREADY_COMMITTED, PROPERTY_CONFIGURATION_REQUIRED and DUPLICATE_ROOM_CODE.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Safe domain error; codes include QUOTA_EXCEEDED, SUBSCRIPTION_RESTRICTED, VERSION_CONFLICT, PREVIEW_INVALID/EXPIRED/ALREADY_COMMITTED, PROPERTY_CONFIGURATION_REQUIRED and DUPLICATE_ROOM_CODE.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Safe domain error; codes include QUOTA_EXCEEDED, SUBSCRIPTION_RESTRICTED, VERSION_CONFLICT, PREVIEW_INVALID/EXPIRED/ALREADY_COMMITTED, PROPERTY_CONFIGURATION_REQUIRED and DUPLICATE_ROOM_CODE.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Safe domain error; codes include QUOTA_EXCEEDED, SUBSCRIPTION_RESTRICTED, VERSION_CONFLICT, PREVIEW_INVALID/EXPIRED/ALREADY_COMMITTED, PROPERTY_CONFIGURATION_REQUIRED and DUPLICATE_ROOM_CODE.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "propertyId": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "code": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 32
+                  },
+                  "floor": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 2147483647
+                  },
+                  "typeId": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "capacity": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 2147483647
+                  },
+                  "facilities": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 80
+                    },
+                    "maxItems": 50,
+                    "uniqueItems": true
+                  },
+                  "condition": {
+                    "const": "inspection",
+                    "default": "inspection"
+                  }
+                },
+                "required": ["propertyId", "code", "floor", "typeId"]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/organizations/{org}/room-types/{id}/update": {
+      "post": {
+        "operationId": "updateRoomType",
+        "description": "",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "org",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "in": "header",
+            "name": "Origin",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-CSRF-Token",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "Idempotency-Key",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 16,
+              "maxLength": 128
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "propertyId": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "defaultCapacity": {
+                      "type": "integer",
+                      "minimum": 1,
+                      "maximum": 2147483647
+                    },
+                    "defaultFacilities": {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 80
+                      },
+                      "maxItems": 50,
+                      "uniqueItems": true
+                    },
+                    "version": {
+                      "type": "integer",
+                      "minimum": 1,
+                      "maximum": 2147483647
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "propertyId",
+                    "name",
+                    "defaultCapacity",
+                    "defaultFacilities",
+                    "version"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Safe domain error; codes include QUOTA_EXCEEDED, SUBSCRIPTION_RESTRICTED, VERSION_CONFLICT, PREVIEW_INVALID/EXPIRED/ALREADY_COMMITTED, PROPERTY_CONFIGURATION_REQUIRED and DUPLICATE_ROOM_CODE.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Safe domain error; codes include QUOTA_EXCEEDED, SUBSCRIPTION_RESTRICTED, VERSION_CONFLICT, PREVIEW_INVALID/EXPIRED/ALREADY_COMMITTED, PROPERTY_CONFIGURATION_REQUIRED and DUPLICATE_ROOM_CODE.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Safe domain error; codes include QUOTA_EXCEEDED, SUBSCRIPTION_RESTRICTED, VERSION_CONFLICT, PREVIEW_INVALID/EXPIRED/ALREADY_COMMITTED, PROPERTY_CONFIGURATION_REQUIRED and DUPLICATE_ROOM_CODE.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Safe domain error; codes include QUOTA_EXCEEDED, SUBSCRIPTION_RESTRICTED, VERSION_CONFLICT, PREVIEW_INVALID/EXPIRED/ALREADY_COMMITTED, PROPERTY_CONFIGURATION_REQUIRED and DUPLICATE_ROOM_CODE.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Safe domain error; codes include QUOTA_EXCEEDED, SUBSCRIPTION_RESTRICTED, VERSION_CONFLICT, PREVIEW_INVALID/EXPIRED/ALREADY_COMMITTED, PROPERTY_CONFIGURATION_REQUIRED and DUPLICATE_ROOM_CODE.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Safe domain error; codes include QUOTA_EXCEEDED, SUBSCRIPTION_RESTRICTED, VERSION_CONFLICT, PREVIEW_INVALID/EXPIRED/ALREADY_COMMITTED, PROPERTY_CONFIGURATION_REQUIRED and DUPLICATE_ROOM_CODE.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Safe domain error; codes include QUOTA_EXCEEDED, SUBSCRIPTION_RESTRICTED, VERSION_CONFLICT, PREVIEW_INVALID/EXPIRED/ALREADY_COMMITTED, PROPERTY_CONFIGURATION_REQUIRED and DUPLICATE_ROOM_CODE.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Safe domain error; codes include QUOTA_EXCEEDED, SUBSCRIPTION_RESTRICTED, VERSION_CONFLICT, PREVIEW_INVALID/EXPIRED/ALREADY_COMMITTED, PROPERTY_CONFIGURATION_REQUIRED and DUPLICATE_ROOM_CODE.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 100
+                  },
+                  "defaultCapacity": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 2147483647
+                  },
+                  "defaultFacilities": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 80
+                    },
+                    "maxItems": 50,
+                    "uniqueItems": true
+                  },
+                  "version": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 2147483647
+                  }
+                },
+                "required": ["version", "name", "defaultCapacity"]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/organizations/{org}/rooms/{id}/update": {
+      "post": {
+        "operationId": "updateRoom",
+        "description": "Explicit changes only. Version protected. Resets current checklist, retains checklist events. applyTypeDefaults explicitly adopts latest defaults.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "org",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "in": "header",
+            "name": "Origin",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-CSRF-Token",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "Idempotency-Key",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 16,
+              "maxLength": 128
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "propertyId": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "code": {
+                      "type": "string"
+                    },
+                    "floor": {
+                      "type": "integer",
+                      "minimum": 1,
+                      "maximum": 2147483647
+                    },
+                    "typeId": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "typeVersion": {
+                      "type": "integer",
+                      "minimum": 1,
+                      "maximum": 2147483647
+                    },
+                    "capacity": {
+                      "type": "integer",
+                      "minimum": 1,
+                      "maximum": 2147483647
+                    },
+                    "facilities": {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 80
+                      },
+                      "maxItems": 50,
+                      "uniqueItems": true
+                    },
+                    "condition": {
+                      "type": "string",
+                      "enum": [
+                        "inspection",
+                        "ready",
+                        "dirty",
+                        "maintenance",
+                        "inactive"
+                      ]
+                    },
+                    "version": {
+                      "type": "integer",
+                      "minimum": 1,
+                      "maximum": 2147483647
+                    },
+                    "typeName": {
+                      "type": "string"
+                    },
+                    "checklistVersion": {
+                      "type": "integer",
+                      "minimum": 1,
+                      "maximum": 2147483647
+                    },
+                    "water": {
+                      "type": "boolean"
+                    },
+                    "electric": {
+                      "type": "boolean"
+                    },
+                    "lock": {
+                      "type": "boolean"
+                    },
+                    "furniture": {
+                      "type": "boolean"
+                    },
+                    "clean": {
+                      "type": "boolean"
+                    },
+                    "checklistRecordedAt": {
+                      "type": ["string", "null"],
+                      "format": "date-time"
+                    },
+                    "checklistComplete": {
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "propertyId",
+                    "code",
+                    "floor",
+                    "typeId",
+                    "typeVersion",
+                    "capacity",
+                    "facilities",
+                    "condition",
+                    "version",
+                    "typeName",
+                    "checklistVersion",
+                    "water",
+                    "electric",
+                    "lock",
+                    "furniture",
+                    "clean",
+                    "checklistRecordedAt",
+                    "checklistComplete"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Safe domain error; codes include QUOTA_EXCEEDED, SUBSCRIPTION_RESTRICTED, VERSION_CONFLICT, PREVIEW_INVALID/EXPIRED/ALREADY_COMMITTED, PROPERTY_CONFIGURATION_REQUIRED and DUPLICATE_ROOM_CODE.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Safe domain error; codes include QUOTA_EXCEEDED, SUBSCRIPTION_RESTRICTED, VERSION_CONFLICT, PREVIEW_INVALID/EXPIRED/ALREADY_COMMITTED, PROPERTY_CONFIGURATION_REQUIRED and DUPLICATE_ROOM_CODE.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Safe domain error; codes include QUOTA_EXCEEDED, SUBSCRIPTION_RESTRICTED, VERSION_CONFLICT, PREVIEW_INVALID/EXPIRED/ALREADY_COMMITTED, PROPERTY_CONFIGURATION_REQUIRED and DUPLICATE_ROOM_CODE.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Safe domain error; codes include QUOTA_EXCEEDED, SUBSCRIPTION_RESTRICTED, VERSION_CONFLICT, PREVIEW_INVALID/EXPIRED/ALREADY_COMMITTED, PROPERTY_CONFIGURATION_REQUIRED and DUPLICATE_ROOM_CODE.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Safe domain error; codes include QUOTA_EXCEEDED, SUBSCRIPTION_RESTRICTED, VERSION_CONFLICT, PREVIEW_INVALID/EXPIRED/ALREADY_COMMITTED, PROPERTY_CONFIGURATION_REQUIRED and DUPLICATE_ROOM_CODE.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Safe domain error; codes include QUOTA_EXCEEDED, SUBSCRIPTION_RESTRICTED, VERSION_CONFLICT, PREVIEW_INVALID/EXPIRED/ALREADY_COMMITTED, PROPERTY_CONFIGURATION_REQUIRED and DUPLICATE_ROOM_CODE.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Safe domain error; codes include QUOTA_EXCEEDED, SUBSCRIPTION_RESTRICTED, VERSION_CONFLICT, PREVIEW_INVALID/EXPIRED/ALREADY_COMMITTED, PROPERTY_CONFIGURATION_REQUIRED and DUPLICATE_ROOM_CODE.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Safe domain error; codes include QUOTA_EXCEEDED, SUBSCRIPTION_RESTRICTED, VERSION_CONFLICT, PREVIEW_INVALID/EXPIRED/ALREADY_COMMITTED, PROPERTY_CONFIGURATION_REQUIRED and DUPLICATE_ROOM_CODE.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "version": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 2147483647
+                  },
+                  "code": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 32
+                  },
+                  "floor": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 2147483647
+                  },
+                  "typeId": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "capacity": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 2147483647
+                  },
+                  "facilities": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 80
+                    },
+                    "maxItems": 50,
+                    "uniqueItems": true
+                  },
+                  "condition": {
+                    "type": "string",
+                    "enum": ["inspection", "dirty", "maintenance", "inactive"]
+                  },
+                  "applyTypeDefaults": {
+                    "type": "boolean",
+                    "default": false
+                  },
+                  "reason": {
+                    "type": "string",
+                    "minLength": 3,
+                    "maxLength": 500
+                  }
+                },
+                "required": [
+                  "version",
+                  "code",
+                  "floor",
+                  "typeId",
+                  "capacity",
+                  "facilities",
+                  "condition",
+                  "reason"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/organizations/{org}/rooms/{id}/checklist": {
+      "post": {
+        "operationId": "saveRoomChecklist",
+        "description": "Owner/Manager/Operations in location. Actor/timestamp/event stored; complete checklist never sets ready or availability.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "org",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "in": "header",
+            "name": "Origin",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-CSRF-Token",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "Idempotency-Key",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 16,
+              "maxLength": 128
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "propertyId": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "code": {
+                      "type": "string"
+                    },
+                    "floor": {
+                      "type": "integer",
+                      "minimum": 1,
+                      "maximum": 2147483647
+                    },
+                    "typeId": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "typeVersion": {
+                      "type": "integer",
+                      "minimum": 1,
+                      "maximum": 2147483647
+                    },
+                    "capacity": {
+                      "type": "integer",
+                      "minimum": 1,
+                      "maximum": 2147483647
+                    },
+                    "facilities": {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 80
+                      },
+                      "maxItems": 50,
+                      "uniqueItems": true
+                    },
+                    "condition": {
+                      "type": "string",
+                      "enum": [
+                        "inspection",
+                        "ready",
+                        "dirty",
+                        "maintenance",
+                        "inactive"
+                      ]
+                    },
+                    "version": {
+                      "type": "integer",
+                      "minimum": 1,
+                      "maximum": 2147483647
+                    },
+                    "typeName": {
+                      "type": "string"
+                    },
+                    "checklistVersion": {
+                      "type": "integer",
+                      "minimum": 1,
+                      "maximum": 2147483647
+                    },
+                    "water": {
+                      "type": "boolean"
+                    },
+                    "electric": {
+                      "type": "boolean"
+                    },
+                    "lock": {
+                      "type": "boolean"
+                    },
+                    "furniture": {
+                      "type": "boolean"
+                    },
+                    "clean": {
+                      "type": "boolean"
+                    },
+                    "checklistRecordedAt": {
+                      "type": ["string", "null"],
+                      "format": "date-time"
+                    },
+                    "checklistComplete": {
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "propertyId",
+                    "code",
+                    "floor",
+                    "typeId",
+                    "typeVersion",
+                    "capacity",
+                    "facilities",
+                    "condition",
+                    "version",
+                    "typeName",
+                    "checklistVersion",
+                    "water",
+                    "electric",
+                    "lock",
+                    "furniture",
+                    "clean",
+                    "checklistRecordedAt",
+                    "checklistComplete"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Safe domain error; codes include QUOTA_EXCEEDED, SUBSCRIPTION_RESTRICTED, VERSION_CONFLICT, PREVIEW_INVALID/EXPIRED/ALREADY_COMMITTED, PROPERTY_CONFIGURATION_REQUIRED and DUPLICATE_ROOM_CODE.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Safe domain error; codes include QUOTA_EXCEEDED, SUBSCRIPTION_RESTRICTED, VERSION_CONFLICT, PREVIEW_INVALID/EXPIRED/ALREADY_COMMITTED, PROPERTY_CONFIGURATION_REQUIRED and DUPLICATE_ROOM_CODE.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Safe domain error; codes include QUOTA_EXCEEDED, SUBSCRIPTION_RESTRICTED, VERSION_CONFLICT, PREVIEW_INVALID/EXPIRED/ALREADY_COMMITTED, PROPERTY_CONFIGURATION_REQUIRED and DUPLICATE_ROOM_CODE.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Safe domain error; codes include QUOTA_EXCEEDED, SUBSCRIPTION_RESTRICTED, VERSION_CONFLICT, PREVIEW_INVALID/EXPIRED/ALREADY_COMMITTED, PROPERTY_CONFIGURATION_REQUIRED and DUPLICATE_ROOM_CODE.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Safe domain error; codes include QUOTA_EXCEEDED, SUBSCRIPTION_RESTRICTED, VERSION_CONFLICT, PREVIEW_INVALID/EXPIRED/ALREADY_COMMITTED, PROPERTY_CONFIGURATION_REQUIRED and DUPLICATE_ROOM_CODE.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Safe domain error; codes include QUOTA_EXCEEDED, SUBSCRIPTION_RESTRICTED, VERSION_CONFLICT, PREVIEW_INVALID/EXPIRED/ALREADY_COMMITTED, PROPERTY_CONFIGURATION_REQUIRED and DUPLICATE_ROOM_CODE.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Safe domain error; codes include QUOTA_EXCEEDED, SUBSCRIPTION_RESTRICTED, VERSION_CONFLICT, PREVIEW_INVALID/EXPIRED/ALREADY_COMMITTED, PROPERTY_CONFIGURATION_REQUIRED and DUPLICATE_ROOM_CODE.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Safe domain error; codes include QUOTA_EXCEEDED, SUBSCRIPTION_RESTRICTED, VERSION_CONFLICT, PREVIEW_INVALID/EXPIRED/ALREADY_COMMITTED, PROPERTY_CONFIGURATION_REQUIRED and DUPLICATE_ROOM_CODE.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "version": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 2147483647
+                  },
+                  "roomVersion": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 2147483647
+                  },
+                  "water": {
+                    "type": "boolean"
+                  },
+                  "electric": {
+                    "type": "boolean"
+                  },
+                  "lock": {
+                    "type": "boolean"
+                  },
+                  "furniture": {
+                    "type": "boolean"
+                  },
+                  "clean": {
+                    "type": "boolean"
+                  }
+                },
+                "required": [
+                  "version",
+                  "roomVersion",
+                  "water",
+                  "electric",
+                  "lock",
+                  "furniture",
+                  "clean"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/organizations/{org}/rooms/bulk-preview": {
+      "post": {
+        "operationId": "previewRooms",
+        "description": "No capacity reservation. Validates profile/type, floors/codes/quota; actor-bound preview expires 15m. pilot uses example 101–106/201–206 only after explicit operator confirmation. Optional override rooms must still contain 12. Existing pilot source returns alreadyApplied.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "org",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "in": "header",
+            "name": "Origin",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-CSRF-Token",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "alreadyApplied": {
+                          "const": false
+                        },
+                        "previewChecksum": {
+                          "type": "string"
+                        },
+                        "propertyId": {
+                          "type": "string",
+                          "format": "uuid"
+                        },
+                        "typeName": {
+                          "type": "string"
+                        },
+                        "rooms": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "additionalProperties": false,
+                            "properties": {
+                              "code": {
+                                "type": "string",
+                                "minLength": 1,
+                                "maxLength": 32
+                              },
+                              "floor": {
+                                "type": "integer",
+                                "minimum": 1,
+                                "maximum": 2147483647
+                              },
+                              "capacity": {
+                                "type": "integer",
+                                "minimum": 1,
+                                "maximum": 2147483647
+                              },
+                              "facilities": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string",
+                                  "minLength": 1,
+                                  "maxLength": 80
+                                },
+                                "maxItems": 50,
+                                "uniqueItems": true
+                              },
+                              "typeId": {
+                                "type": "string",
+                                "format": "uuid"
+                              },
+                              "typeVersion": {
+                                "type": "integer",
+                                "minimum": 1,
+                                "maximum": 2147483647
+                              }
+                            },
+                            "required": [
+                              "code",
+                              "floor",
+                              "capacity",
+                              "facilities",
+                              "typeId",
+                              "typeVersion"
+                            ]
+                          },
+                          "minItems": 1,
+                          "maxItems": 100
+                        },
+                        "expiresAt": {
+                          "type": "string",
+                          "format": "date-time"
+                        }
+                      },
+                      "required": [
+                        "alreadyApplied",
+                        "previewChecksum",
+                        "propertyId",
+                        "typeName",
+                        "rooms",
+                        "expiresAt"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "alreadyApplied": {
+                          "const": true
+                        },
+                        "batchId": {
+                          "type": "string",
+                          "format": "uuid"
+                        },
+                        "rooms": {
+                          "type": "array",
+                          "maxItems": 0
+                        }
+                      },
+                      "required": ["alreadyApplied", "batchId", "rooms"]
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Safe domain error; codes include QUOTA_EXCEEDED, SUBSCRIPTION_RESTRICTED, VERSION_CONFLICT, PREVIEW_INVALID/EXPIRED/ALREADY_COMMITTED, PROPERTY_CONFIGURATION_REQUIRED and DUPLICATE_ROOM_CODE.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Safe domain error; codes include QUOTA_EXCEEDED, SUBSCRIPTION_RESTRICTED, VERSION_CONFLICT, PREVIEW_INVALID/EXPIRED/ALREADY_COMMITTED, PROPERTY_CONFIGURATION_REQUIRED and DUPLICATE_ROOM_CODE.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Safe domain error; codes include QUOTA_EXCEEDED, SUBSCRIPTION_RESTRICTED, VERSION_CONFLICT, PREVIEW_INVALID/EXPIRED/ALREADY_COMMITTED, PROPERTY_CONFIGURATION_REQUIRED and DUPLICATE_ROOM_CODE.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Safe domain error; codes include QUOTA_EXCEEDED, SUBSCRIPTION_RESTRICTED, VERSION_CONFLICT, PREVIEW_INVALID/EXPIRED/ALREADY_COMMITTED, PROPERTY_CONFIGURATION_REQUIRED and DUPLICATE_ROOM_CODE.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Safe domain error; codes include QUOTA_EXCEEDED, SUBSCRIPTION_RESTRICTED, VERSION_CONFLICT, PREVIEW_INVALID/EXPIRED/ALREADY_COMMITTED, PROPERTY_CONFIGURATION_REQUIRED and DUPLICATE_ROOM_CODE.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Safe domain error; codes include QUOTA_EXCEEDED, SUBSCRIPTION_RESTRICTED, VERSION_CONFLICT, PREVIEW_INVALID/EXPIRED/ALREADY_COMMITTED, PROPERTY_CONFIGURATION_REQUIRED and DUPLICATE_ROOM_CODE.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Safe domain error; codes include QUOTA_EXCEEDED, SUBSCRIPTION_RESTRICTED, VERSION_CONFLICT, PREVIEW_INVALID/EXPIRED/ALREADY_COMMITTED, PROPERTY_CONFIGURATION_REQUIRED and DUPLICATE_ROOM_CODE.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Safe domain error; codes include QUOTA_EXCEEDED, SUBSCRIPTION_RESTRICTED, VERSION_CONFLICT, PREVIEW_INVALID/EXPIRED/ALREADY_COMMITTED, PROPERTY_CONFIGURATION_REQUIRED and DUPLICATE_ROOM_CODE.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "oneOf": [
+                  {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                      "mode": {
+                        "const": "sequence"
+                      },
+                      "propertyId": {
+                        "type": "string",
+                        "format": "uuid"
+                      },
+                      "typeId": {
+                        "type": "string",
+                        "format": "uuid"
+                      },
+                      "prefix": {
+                        "type": "string",
+                        "maxLength": 24
+                      },
+                      "startNumber": {
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 2147483647
+                      },
+                      "count": {
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 100
+                      },
+                      "floor": {
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 2147483647
+                      },
+                      "padding": {
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 12,
+                        "default": 1
+                      }
+                    },
+                    "required": [
+                      "propertyId",
+                      "typeId",
+                      "prefix",
+                      "startNumber",
+                      "count",
+                      "floor"
+                    ]
+                  },
+                  {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                      "mode": {
+                        "const": "pilot"
+                      },
+                      "propertyId": {
+                        "type": "string",
+                        "format": "uuid"
+                      },
+                      "typeId": {
+                        "type": "string",
+                        "format": "uuid"
+                      },
+                      "rooms": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "additionalProperties": false,
+                          "properties": {
+                            "code": {
+                              "type": "string",
+                              "minLength": 1,
+                              "maxLength": 32
+                            },
+                            "floor": {
+                              "type": "integer",
+                              "minimum": 1,
+                              "maximum": 2147483647
+                            }
+                          },
+                          "required": ["code", "floor"]
+                        },
+                        "minItems": 12,
+                        "maxItems": 12
+                      }
+                    },
+                    "required": ["mode", "propertyId", "typeId"]
+                  },
+                  {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                      "mode": {
+                        "const": "manual"
+                      },
+                      "propertyId": {
+                        "type": "string",
+                        "format": "uuid"
+                      },
+                      "typeId": {
+                        "type": "string",
+                        "format": "uuid"
+                      },
+                      "rooms": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "additionalProperties": false,
+                          "properties": {
+                            "code": {
+                              "type": "string",
+                              "minLength": 1,
+                              "maxLength": 32
+                            },
+                            "floor": {
+                              "type": "integer",
+                              "minimum": 1,
+                              "maximum": 2147483647
+                            }
+                          },
+                          "required": ["code", "floor"]
+                        },
+                        "minItems": 1,
+                        "maxItems": 100
+                      }
+                    },
+                    "required": ["mode", "propertyId", "typeId", "rooms"]
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/organizations/{org}/rooms/bulk-commit": {
+      "post": {
+        "operationId": "commitRoomPreview",
+        "description": "All rows/audits/batch/idempotency commit atomically. Revalidates permissions, preview ownership/expiry, policy versions, codes and quota. Same key replays original result. New key cannot consume preview again.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "org",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "in": "header",
+            "name": "Origin",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-CSRF-Token",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "Idempotency-Key",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 16,
+              "maxLength": 128
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "batchId": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "created": {
+                      "type": "integer",
+                      "minimum": 1,
+                      "maximum": 100
+                    },
+                    "rooms": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "properties": {
+                          "id": {
+                            "type": "string",
+                            "format": "uuid"
+                          },
+                          "propertyId": {
+                            "type": "string",
+                            "format": "uuid"
+                          },
+                          "code": {
+                            "type": "string"
+                          },
+                          "floor": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "maximum": 2147483647
+                          },
+                          "typeId": {
+                            "type": "string",
+                            "format": "uuid"
+                          },
+                          "typeVersion": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "maximum": 2147483647
+                          },
+                          "capacity": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "maximum": 2147483647
+                          },
+                          "facilities": {
+                            "type": "array",
+                            "items": {
+                              "type": "string",
+                              "minLength": 1,
+                              "maxLength": 80
+                            },
+                            "maxItems": 50,
+                            "uniqueItems": true
+                          },
+                          "condition": {
+                            "type": "string",
+                            "enum": [
+                              "inspection",
+                              "ready",
+                              "dirty",
+                              "maintenance",
+                              "inactive"
+                            ]
+                          },
+                          "version": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "maximum": 2147483647
+                          },
+                          "typeName": {
+                            "type": "string"
+                          },
+                          "checklistVersion": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "maximum": 2147483647
+                          },
+                          "water": {
+                            "type": "boolean"
+                          },
+                          "electric": {
+                            "type": "boolean"
+                          },
+                          "lock": {
+                            "type": "boolean"
+                          },
+                          "furniture": {
+                            "type": "boolean"
+                          },
+                          "clean": {
+                            "type": "boolean"
+                          },
+                          "checklistRecordedAt": {
+                            "type": ["string", "null"],
+                            "format": "date-time"
+                          },
+                          "checklistComplete": {
+                            "type": "boolean"
+                          }
+                        },
+                        "required": [
+                          "id",
+                          "propertyId",
+                          "code",
+                          "floor",
+                          "typeId",
+                          "typeVersion",
+                          "capacity",
+                          "facilities",
+                          "condition",
+                          "version",
+                          "typeName",
+                          "checklistVersion",
+                          "water",
+                          "electric",
+                          "lock",
+                          "furniture",
+                          "clean",
+                          "checklistRecordedAt",
+                          "checklistComplete"
+                        ]
+                      },
+                      "minItems": 1,
+                      "maxItems": 100
+                    }
+                  },
+                  "required": ["batchId", "created", "rooms"]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Safe domain error; codes include QUOTA_EXCEEDED, SUBSCRIPTION_RESTRICTED, VERSION_CONFLICT, PREVIEW_INVALID/EXPIRED/ALREADY_COMMITTED, PROPERTY_CONFIGURATION_REQUIRED and DUPLICATE_ROOM_CODE.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Safe domain error; codes include QUOTA_EXCEEDED, SUBSCRIPTION_RESTRICTED, VERSION_CONFLICT, PREVIEW_INVALID/EXPIRED/ALREADY_COMMITTED, PROPERTY_CONFIGURATION_REQUIRED and DUPLICATE_ROOM_CODE.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Safe domain error; codes include QUOTA_EXCEEDED, SUBSCRIPTION_RESTRICTED, VERSION_CONFLICT, PREVIEW_INVALID/EXPIRED/ALREADY_COMMITTED, PROPERTY_CONFIGURATION_REQUIRED and DUPLICATE_ROOM_CODE.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Safe domain error; codes include QUOTA_EXCEEDED, SUBSCRIPTION_RESTRICTED, VERSION_CONFLICT, PREVIEW_INVALID/EXPIRED/ALREADY_COMMITTED, PROPERTY_CONFIGURATION_REQUIRED and DUPLICATE_ROOM_CODE.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Safe domain error; codes include QUOTA_EXCEEDED, SUBSCRIPTION_RESTRICTED, VERSION_CONFLICT, PREVIEW_INVALID/EXPIRED/ALREADY_COMMITTED, PROPERTY_CONFIGURATION_REQUIRED and DUPLICATE_ROOM_CODE.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Safe domain error; codes include QUOTA_EXCEEDED, SUBSCRIPTION_RESTRICTED, VERSION_CONFLICT, PREVIEW_INVALID/EXPIRED/ALREADY_COMMITTED, PROPERTY_CONFIGURATION_REQUIRED and DUPLICATE_ROOM_CODE.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Safe domain error; codes include QUOTA_EXCEEDED, SUBSCRIPTION_RESTRICTED, VERSION_CONFLICT, PREVIEW_INVALID/EXPIRED/ALREADY_COMMITTED, PROPERTY_CONFIGURATION_REQUIRED and DUPLICATE_ROOM_CODE.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Safe domain error; codes include QUOTA_EXCEEDED, SUBSCRIPTION_RESTRICTED, VERSION_CONFLICT, PREVIEW_INVALID/EXPIRED/ALREADY_COMMITTED, PROPERTY_CONFIGURATION_REQUIRED and DUPLICATE_ROOM_CODE.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "propertyId": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "previewChecksum": {
+                    "type": "string",
+                    "pattern": "^[a-f0-9]{64}$"
+                  },
+                  "confirmCodes": {
+                    "const": true
+                  },
+                  "confirmLayout": {
+                    "const": true
+                  }
+                },
+                "required": [
+                  "propertyId",
+                  "previewChecksum",
+                  "confirmCodes",
+                  "confirmLayout"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/organizations/{org}/subscriptions": {
+      "get": {
+        "operationId": "inventoryEntitlements",
+        "description": "Owner only. Tenant-wide usage, not location-filtered. No ability for tenant to raise own quota. Development kind is invalid in production.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "org",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "configured": {
+                          "const": false
+                        }
+                      },
+                      "required": ["configured"]
+                    },
+                    {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "configured": {
+                          "const": true
+                        },
+                        "planLabel": {
+                          "type": "string"
+                        },
+                        "kind": {
+                          "type": "string",
+                          "enum": ["development", "commercial"]
+                        },
+                        "state": {
+                          "type": "string",
+                          "enum": [
+                            "trial",
+                            "active",
+                            "grace",
+                            "restricted",
+                            "cancelled"
+                          ]
+                        },
+                        "roomLimit": {
+                          "type": "integer",
+                          "minimum": 1,
+                          "maximum": 2147483647
+                        },
+                        "propertyLimit": {
+                          "type": "integer",
+                          "minimum": 1,
+                          "maximum": 2147483647
+                        },
+                        "staffLimit": {
+                          "type": "integer",
+                          "minimum": 1,
+                          "maximum": 2147483647
+                        },
+                        "roomsUsed": {
+                          "type": "integer",
+                          "minimum": 0
+                        },
+                        "propertiesUsed": {
+                          "type": "integer",
+                          "minimum": 0
+                        },
+                        "staffUsed": {
+                          "type": "integer",
+                          "minimum": 0
+                        },
+                        "version": {
+                          "type": "integer",
+                          "minimum": 1,
+                          "maximum": 2147483647
+                        }
+                      },
+                      "required": [
+                        "configured",
+                        "planLabel",
+                        "kind",
+                        "state",
+                        "roomLimit",
+                        "propertyLimit",
+                        "staffLimit",
+                        "roomsUsed",
+                        "propertiesUsed",
+                        "staffUsed",
+                        "version"
+                      ]
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Safe domain error; codes include QUOTA_EXCEEDED, SUBSCRIPTION_RESTRICTED, VERSION_CONFLICT, PREVIEW_INVALID/EXPIRED/ALREADY_COMMITTED, PROPERTY_CONFIGURATION_REQUIRED and DUPLICATE_ROOM_CODE.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Safe domain error; codes include QUOTA_EXCEEDED, SUBSCRIPTION_RESTRICTED, VERSION_CONFLICT, PREVIEW_INVALID/EXPIRED/ALREADY_COMMITTED, PROPERTY_CONFIGURATION_REQUIRED and DUPLICATE_ROOM_CODE.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Safe domain error; codes include QUOTA_EXCEEDED, SUBSCRIPTION_RESTRICTED, VERSION_CONFLICT, PREVIEW_INVALID/EXPIRED/ALREADY_COMMITTED, PROPERTY_CONFIGURATION_REQUIRED and DUPLICATE_ROOM_CODE.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Safe domain error; codes include QUOTA_EXCEEDED, SUBSCRIPTION_RESTRICTED, VERSION_CONFLICT, PREVIEW_INVALID/EXPIRED/ALREADY_COMMITTED, PROPERTY_CONFIGURATION_REQUIRED and DUPLICATE_ROOM_CODE.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Safe domain error; codes include QUOTA_EXCEEDED, SUBSCRIPTION_RESTRICTED, VERSION_CONFLICT, PREVIEW_INVALID/EXPIRED/ALREADY_COMMITTED, PROPERTY_CONFIGURATION_REQUIRED and DUPLICATE_ROOM_CODE.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Safe domain error; codes include QUOTA_EXCEEDED, SUBSCRIPTION_RESTRICTED, VERSION_CONFLICT, PREVIEW_INVALID/EXPIRED/ALREADY_COMMITTED, PROPERTY_CONFIGURATION_REQUIRED and DUPLICATE_ROOM_CODE.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Safe domain error; codes include QUOTA_EXCEEDED, SUBSCRIPTION_RESTRICTED, VERSION_CONFLICT, PREVIEW_INVALID/EXPIRED/ALREADY_COMMITTED, PROPERTY_CONFIGURATION_REQUIRED and DUPLICATE_ROOM_CODE.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Safe domain error; codes include QUOTA_EXCEEDED, SUBSCRIPTION_RESTRICTED, VERSION_CONFLICT, PREVIEW_INVALID/EXPIRED/ALREADY_COMMITTED, PROPERTY_CONFIGURATION_REQUIRED and DUPLICATE_ROOM_CODE.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "SessionCookie": {
+        "type": "apiKey",
+        "in": "cookie",
+        "name": "session"
+      }
+    },
+    "schemas": {
+      "Room": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "propertyId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "code": {
+            "type": "string"
+          },
+          "floor": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 2147483647
+          },
+          "typeId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "typeVersion": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 2147483647
+          },
+          "capacity": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 2147483647
+          },
+          "facilities": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 80
+            },
+            "maxItems": 50,
+            "uniqueItems": true
+          },
+          "condition": {
+            "type": "string",
+            "enum": ["inspection", "ready", "dirty", "maintenance", "inactive"]
+          },
+          "version": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 2147483647
+          },
+          "typeName": {
+            "type": "string"
+          },
+          "checklistVersion": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 2147483647
+          },
+          "water": {
+            "type": "boolean"
+          },
+          "electric": {
+            "type": "boolean"
+          },
+          "lock": {
+            "type": "boolean"
+          },
+          "furniture": {
+            "type": "boolean"
+          },
+          "clean": {
+            "type": "boolean"
+          },
+          "checklistRecordedAt": {
+            "type": ["string", "null"],
+            "format": "date-time"
+          },
+          "checklistComplete": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "id",
+          "propertyId",
+          "code",
+          "floor",
+          "typeId",
+          "typeVersion",
+          "capacity",
+          "facilities",
+          "condition",
+          "version",
+          "typeName",
+          "checklistVersion",
+          "water",
+          "electric",
+          "lock",
+          "furniture",
+          "clean",
+          "checklistRecordedAt",
+          "checklistComplete"
+        ]
+      },
+      "RoomType": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "propertyId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string"
+          },
+          "defaultCapacity": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 2147483647
+          },
+          "defaultFacilities": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 80
+            },
+            "maxItems": 50,
+            "uniqueItems": true
+          },
+          "version": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 2147483647
+          }
+        },
+        "required": [
+          "id",
+          "propertyId",
+          "name",
+          "defaultCapacity",
+          "defaultFacilities",
+          "version"
+        ]
+      },
+      "PropertyProfile": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string"
+          },
+          "city": {
+            "type": "string"
+          },
+          "timezone": {
+            "type": "string"
+          },
+          "code": {
+            "type": ["string", "null"]
+          },
+          "floors": {
+            "type": ["integer", "null"],
+            "minimum": 1
+          },
+          "segment": {
+            "type": ["string", "null"]
+          },
+          "address": {
+            "type": ["string", "null"]
+          },
+          "contactPhone": {
+            "type": ["string", "null"]
+          },
+          "contactEmail": {
+            "type": ["string", "null"]
+          },
+          "version": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 2147483647
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "city",
+          "timezone",
+          "code",
+          "floors",
+          "segment",
+          "address",
+          "contactPhone",
+          "contactEmail",
+          "version"
+        ]
+      },
+      "Error": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "error": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "code": {
+                "type": "string"
+              },
+              "requestId": {
+                "type": "string"
+              }
+            },
+            "required": ["code", "requestId"]
+          }
+        },
+        "required": ["error"]
+      }
+    }
+  }
+}

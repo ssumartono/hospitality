@@ -1,0 +1,45 @@
+
+> kost-hospitality@0.6.0 test:e2e
+> tsx scripts/prepare-e2e.ts && playwright test
+
+Applied 022_booking_accept_guards.sql
+TEST_ONLY development plan configured; new assignments: 0; existing entitlements preserved.
+Encrypted legacy outbox rows: 0; no token values logged.
+Encrypted-only outbox constraint validated; application/worker roles restricted.
+node.exe : [WebServer] (node:24888) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+At line:1 char:1
++ & "C:\Program Files\nodejs/node.exe" "C:\Users\62811\AppData\Roaming\ ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: ([WebServer] (no... env being set.:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:16256) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:18444) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:19788) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 14 tests using 1 worker
+
+(node:15292) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok  1 [desktop] › tests\e2e\account-staff.spec.ts:71:1 › account MFA enrollment, recovery login and disable work through the UI (5.8s)
+  ok  2 [desktop] › tests\e2e\account-staff.spec.ts:129:1 › Owner invites staff, changes location scope and revokes access through the UI (11.0s)
+  ok  3 [desktop] › tests\e2e\allocation.spec.ts:118:1 › operational block persists, overlap fails, release preserves history and inspection condition (6.6s)
+  ok  4 [desktop] › tests\e2e\booking.spec.ts:118:1 › staff booking readiness quote request approval invoice and in-app persist without fake payment (7.6s)
+  ok  5 [desktop] › tests\e2e\foundation.spec.ts:3:1 › owner registers, verifies email through SMTP, creates organization and location (4.0s)
+  ok  6 [desktop] › tests\e2e\inventory.spec.ts:118:1 › inventory profile, pilot 12→13, default snapshots, checklist and second location persist (8.9s)
+  ok  7 [desktop] › tests\e2e\pricing.spec.ts:118:1 › policy setup and internal quote persist, type override and future versions do not rewrite saved snapshot (6.2s)
+(node:24580) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok  8 [mobile] › tests\e2e\account-staff.spec.ts:71:1 › account MFA enrollment, recovery login and disable work through the UI (5.3s)
+  ok  9 [mobile] › tests\e2e\account-staff.spec.ts:129:1 › Owner invites staff, changes location scope and revokes access through the UI (9.5s)
+  ok 10 [mobile] › tests\e2e\allocation.spec.ts:118:1 › operational block persists, overlap fails, release preserves history and inspection condition (5.7s)
+  ok 11 [mobile] › tests\e2e\booking.spec.ts:118:1 › staff booking readiness quote request approval invoice and in-app persist without fake payment (8.8s)
+  ok 12 [mobile] › tests\e2e\foundation.spec.ts:3:1 › owner registers, verifies email through SMTP, creates organization and location (4.1s)
+  ok 13 [mobile] › tests\e2e\inventory.spec.ts:118:1 › inventory profile, pilot 12→13, default snapshots, checklist and second location persist (8.4s)
+  ok 14 [mobile] › tests\e2e\pricing.spec.ts:118:1 › policy setup and internal quote persist, type override and future versions do not rewrite saved snapshot (6.8s)
+
+  14 passed (1.8m)

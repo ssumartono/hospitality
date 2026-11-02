@@ -1,0 +1,95 @@
+{
+  "checkedAt": "2026-11-02T14:25:24.574Z",
+  "files": 22,
+  "mismatches": [],
+  "checks": [
+    {
+      "file": "CHANGELOG.md",
+      "ok": true
+    },
+    {
+      "file": "PRD.md",
+      "ok": true
+    },
+    {
+      "file": "README.md",
+      "ok": true
+    },
+    {
+      "file": "VALIDATION_REPORT.md",
+      "ok": true
+    },
+    {
+      "file": "api/openapi-v1.yaml",
+      "ok": true
+    },
+    {
+      "file": "docs/01_SCOPE_RELEASE.md",
+      "ok": true
+    },
+    {
+      "file": "docs/02_BUSINESS_RULES.md",
+      "ok": true
+    },
+    {
+      "file": "docs/03_ARCHITECTURE_DATA_SECURITY.md",
+      "ok": true
+    },
+    {
+      "file": "docs/04_ACCEPTANCE_UAT.md",
+      "ok": true
+    },
+    {
+      "file": "docs/05_BACKLOG.md",
+      "ok": true
+    },
+    {
+      "file": "docs/06_RELEASE_RUNBOOK.md",
+      "ok": true
+    },
+    {
+      "file": "docs/07_MOCKUP_GAP_REGISTER.md",
+      "ok": true
+    },
+    {
+      "file": "docs/08_DEVELOPER_HANDOFF.md",
+      "ok": true
+    },
+    {
+      "file": "fixtures/BACKLOG.csv",
+      "ok": true
+    },
+    {
+      "file": "fixtures/BACKLOG.json",
+      "ok": true
+    },
+    {
+      "file": "fixtures/MIGRATION_EXAMPLE_TEST_ONLY.csv",
+      "ok": true
+    },
+    {
+      "file": "fixtures/MIGRATION_TEMPLATE.csv",
+      "ok": true
+    },
+    {
+      "file": "fixtures/PILOT_CONFIG.json",
+      "ok": true
+    },
+    {
+      "file": "fixtures/PILOT_ROOMS.csv",
+      "ok": true
+    },
+    {
+      "file": "fixtures/UAT_CASES.csv",
+      "ok": true
+    },
+    {
+      "file": "reference/MOCKUP_README.md",
+      "ok": true
+    },
+    {
+      "file": "reference/PRD_BASELINE_2026-10-30.md",
+      "ok": true
+    }
+  ]
+}

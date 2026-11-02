@@ -1,0 +1,1031 @@
+[
+  {
+    "id": "B01.1",
+    "epic": "B01",
+    "title": "Model user/token dan adapter auth",
+    "priority": "P0",
+    "depends_on": [],
+    "acceptance": [
+      "AC-25",
+      "AC-26"
+    ],
+    "status": "PLANNED",
+    "owner": "UNASSIGNED",
+    "evidence": ""
+  },
+  {
+    "id": "B01.2",
+    "epic": "B01",
+    "title": "Session, MFA/re-auth dan revoke",
+    "priority": "P0",
+    "depends_on": [
+      "B01.1"
+    ],
+    "acceptance": [
+      "AC-22",
+      "AC-25",
+      "AC-26"
+    ],
+    "status": "PLANNED",
+    "owner": "UNASSIGNED",
+    "evidence": ""
+  },
+  {
+    "id": "B01.3",
+    "epic": "B01",
+    "title": "Register/verify/reset/invitation email flows",
+    "priority": "P0",
+    "depends_on": [
+      "B01.2"
+    ],
+    "acceptance": [
+      "AC-25"
+    ],
+    "status": "PLANNED",
+    "owner": "UNASSIGNED",
+    "evidence": ""
+  },
+  {
+    "id": "B02.1",
+    "epic": "B02",
+    "title": "Schema/migration tenant dan composite FK",
+    "priority": "P0",
+    "depends_on": [
+      "B01.1"
+    ],
+    "acceptance": [
+      "AC-02",
+      "AC-28"
+    ],
+    "status": "PLANNED",
+    "owner": "UNASSIGNED",
+    "evidence": ""
+  },
+  {
+    "id": "B02.2",
+    "epic": "B02",
+    "title": "Membership, role dan location authorizer/RLS",
+    "priority": "P0",
+    "depends_on": [
+      "B02.1",
+      "B01.2"
+    ],
+    "acceptance": [
+      "AC-02",
+      "AC-15",
+      "AC-22",
+      "AC-59"
+    ],
+    "status": "PLANNED",
+    "owner": "UNASSIGNED",
+    "evidence": ""
+  },
+  {
+    "id": "B02.3",
+    "epic": "B02",
+    "title": "Private storage/quarantine/scan/URL authorization",
+    "priority": "P0",
+    "depends_on": [
+      "B02.2"
+    ],
+    "acceptance": [
+      "AC-02",
+      "AC-27"
+    ],
+    "status": "PLANNED",
+    "owner": "UNASSIGNED",
+    "evidence": ""
+  },
+  {
+    "id": "B03.1",
+    "epic": "B03",
+    "title": "Property/room/type/facilities schema dan CRUD",
+    "priority": "P0",
+    "depends_on": [
+      "B02.2"
+    ],
+    "acceptance": [
+      "AC-01"
+    ],
+    "status": "PLANNED",
+    "owner": "UNASSIGNED",
+    "evidence": ""
+  },
+  {
+    "id": "B03.2",
+    "epic": "B03",
+    "title": "Generator massal, readiness, UI dan kuota hooks",
+    "priority": "P0",
+    "depends_on": [
+      "B03.1",
+      "B16.1"
+    ],
+    "acceptance": [
+      "AC-01",
+      "AC-16"
+    ],
+    "status": "PLANNED",
+    "owner": "UNASSIGNED",
+    "evidence": ""
+  },
+  {
+    "id": "B03.3",
+    "epic": "B03",
+    "title": "Archive/blokir/occupancy conflict rules",
+    "priority": "P0",
+    "depends_on": [
+      "B03.1",
+      "B07.1"
+    ],
+    "acceptance": [
+      "AC-10",
+      "AC-21",
+      "AC-45"
+    ],
+    "status": "PLANNED",
+    "owner": "UNASSIGNED",
+    "evidence": ""
+  },
+  {
+    "id": "B04.1",
+    "epic": "B04",
+    "title": "Policy version/effective_at dan integer money",
+    "priority": "P0",
+    "depends_on": [
+      "B03.1"
+    ],
+    "acceptance": [
+      "AC-09",
+      "AC-11",
+      "AC-32"
+    ],
+    "status": "PLANNED",
+    "owner": "UNASSIGNED",
+    "evidence": ""
+  },
+  {
+    "id": "B04.2",
+    "epic": "B04",
+    "title": "Quote calculator + fixtures/prorata/override",
+    "priority": "P0",
+    "depends_on": [
+      "B04.1"
+    ],
+    "acceptance": [
+      "AC-09",
+      "AC-31",
+      "AC-32"
+    ],
+    "status": "PLANNED",
+    "owner": "UNASSIGNED",
+    "evidence": ""
+  },
+  {
+    "id": "B04.3",
+    "epic": "B04",
+    "title": "Snapshot booking/lease/invoice/amendment contract",
+    "priority": "P0",
+    "depends_on": [
+      "B04.2"
+    ],
+    "acceptance": [
+      "AC-11",
+      "AC-31"
+    ],
+    "status": "PLANNED",
+    "owner": "UNASSIGNED",
+    "evidence": ""
+  },
+  {
+    "id": "B05.1",
+    "epic": "B05",
+    "title": "Public projections/routes/media derivatives",
+    "priority": "P0",
+    "depends_on": [
+      "B04.2",
+      "B02.3",
+      "B03.2"
+    ],
+    "acceptance": [
+      "AC-02",
+      "AC-20",
+      "AC-31"
+    ],
+    "status": "PLANNED",
+    "owner": "UNASSIGNED",
+    "evidence": ""
+  },
+  {
+    "id": "B05.2",
+    "epic": "B05",
+    "title": "Publish/unpublish server gate + UI",
+    "priority": "P0",
+    "depends_on": [
+      "B05.1"
+    ],
+    "acceptance": [
+      "AC-20"
+    ],
+    "status": "PLANNED",
+    "owner": "UNASSIGNED",
+    "evidence": ""
+  },
+  {
+    "id": "B05.3",
+    "epic": "B05",
+    "title": "Public quote/order UX dan mobile errors",
+    "priority": "P0",
+    "depends_on": [
+      "B05.2",
+      "B07.2"
+    ],
+    "acceptance": [
+      "AC-18",
+      "AC-31"
+    ],
+    "status": "PLANNED",
+    "owner": "UNASSIGNED",
+    "evidence": ""
+  },
+  {
+    "id": "B06.1",
+    "epic": "B06",
+    "title": "Inquiry/consent/source/rate-limit",
+    "priority": "P0",
+    "depends_on": [
+      "B05.1"
+    ],
+    "acceptance": [
+      "AC-18",
+      "AC-28"
+    ],
+    "status": "PLANNED",
+    "owner": "UNASSIGNED",
+    "evidence": ""
+  },
+  {
+    "id": "B06.2",
+    "epic": "B06",
+    "title": "Viewing scheduling/conflicts/consent/history",
+    "priority": "P0",
+    "depends_on": [
+      "B06.1"
+    ],
+    "acceptance": [
+      "AC-18",
+      "AC-44"
+    ],
+    "status": "PLANNED",
+    "owner": "UNASSIGNED",
+    "evidence": ""
+  },
+  {
+    "id": "B06.3",
+    "epic": "B06",
+    "title": "Idempotent inquiry-to-booking conversion",
+    "priority": "P0",
+    "depends_on": [
+      "B06.2",
+      "B07.1"
+    ],
+    "acceptance": [
+      "AC-24"
+    ],
+    "status": "PLANNED",
+    "owner": "UNASSIGNED",
+    "evidence": ""
+  },
+  {
+    "id": "B07.1",
+    "epic": "B07",
+    "title": "Booking/allocation/presence foundations + constraints",
+    "priority": "P0",
+    "depends_on": [
+      "B03.1",
+      "B02.2"
+    ],
+    "acceptance": [
+      "AC-03",
+      "AC-21",
+      "AC-24"
+    ],
+    "status": "PLANNED",
+    "owner": "UNASSIGNED",
+    "evidence": ""
+  },
+  {
+    "id": "B07.2",
+    "epic": "B07",
+    "title": "Accept + invoice + idempotency transaction",
+    "priority": "P0",
+    "depends_on": [
+      "B07.1",
+      "B04.3",
+      "B08.1"
+    ],
+    "acceptance": [
+      "AC-03",
+      "AC-24",
+      "AC-29"
+    ],
+    "status": "PLANNED",
+    "owner": "UNASSIGNED",
+    "evidence": ""
+  },
+  {
+    "id": "B07.3",
+    "epic": "B07",
+    "title": "Expiry/review/cancel/payment race worker",
+    "priority": "P0",
+    "depends_on": [
+      "B07.2",
+      "B08.2",
+      "B18.1"
+    ],
+    "acceptance": [
+      "AC-04",
+      "AC-05",
+      "AC-06",
+      "AC-30"
+    ],
+    "status": "PLANNED",
+    "owner": "UNASSIGNED",
+    "evidence": ""
+  },
+  {
+    "id": "B08.1",
+    "epic": "B08",
+    "title": "Immutable invoice/lines/adjustment/number schema",
+    "priority": "P0",
+    "depends_on": [
+      "B04.3",
+      "B02.2"
+    ],
+    "acceptance": [
+      "AC-07",
+      "AC-11",
+      "AC-34"
+    ],
+    "status": "PLANNED",
+    "owner": "UNASSIGNED",
+    "evidence": ""
+  },
+  {
+    "id": "B08.2",
+    "epic": "B08",
+    "title": "Proof/private reference + verify/receipt/allocation",
+    "priority": "P0",
+    "depends_on": [
+      "B08.1",
+      "B07.1",
+      "B02.3"
+    ],
+    "acceptance": [
+      "AC-05",
+      "AC-06",
+      "AC-07",
+      "AC-33"
+    ],
+    "status": "PLANNED",
+    "owner": "UNASSIGNED",
+    "evidence": ""
+  },
+  {
+    "id": "B08.3",
+    "epic": "B08",
+    "title": "Credit/multi-invoice/reversal/financial UI",
+    "priority": "P0",
+    "depends_on": [
+      "B08.2"
+    ],
+    "acceptance": [
+      "AC-07",
+      "AC-33",
+      "AC-34",
+      "AC-38"
+    ],
+    "status": "PLANNED",
+    "owner": "UNASSIGNED",
+    "evidence": ""
+  },
+  {
+    "id": "B09.1",
+    "epic": "B09",
+    "title": "Line-level deposit ledger/opening invariants",
+    "priority": "P0",
+    "depends_on": [
+      "B08.2"
+    ],
+    "acceptance": [
+      "AC-13",
+      "AC-35"
+    ],
+    "status": "PLANNED",
+    "owner": "UNASSIGNED",
+    "evidence": ""
+  },
+  {
+    "id": "B09.2",
+    "epic": "B09",
+    "title": "Owner approval/reservation/refund payout reference",
+    "priority": "P0",
+    "depends_on": [
+      "B09.1"
+    ],
+    "acceptance": [
+      "AC-13",
+      "AC-35"
+    ],
+    "status": "PLANNED",
+    "owner": "UNASSIGNED",
+    "evidence": ""
+  },
+  {
+    "id": "B09.3",
+    "epic": "B09",
+    "title": "Refund correction, exception queue, reconciliation",
+    "priority": "P0",
+    "depends_on": [
+      "B09.2",
+      "B08.3"
+    ],
+    "acceptance": [
+      "AC-13",
+      "AC-35",
+      "AC-47"
+    ],
+    "status": "PLANNED",
+    "owner": "UNASSIGNED",
+    "evidence": ""
+  },
+  {
+    "id": "B10.1",
+    "epic": "B10",
+    "title": "Lease/occupants/agreement versions/acceptance",
+    "priority": "P0",
+    "depends_on": [
+      "B07.2",
+      "B02.3"
+    ],
+    "acceptance": [
+      "AC-36",
+      "AC-37"
+    ],
+    "status": "PLANNED",
+    "owner": "UNASSIGNED",
+    "evidence": ""
+  },
+  {
+    "id": "B10.2",
+    "epic": "B10",
+    "title": "Check-in transaction/inspection/keys/override",
+    "priority": "P0",
+    "depends_on": [
+      "B10.1",
+      "B08.2"
+    ],
+    "acceptance": [
+      "AC-10",
+      "AC-37",
+      "AC-38",
+      "AC-58"
+    ],
+    "status": "PLANNED",
+    "owner": "UNASSIGNED",
+    "evidence": ""
+  },
+  {
+    "id": "B10.3",
+    "epic": "B10",
+    "title": "Portal identity/ownership and actual history",
+    "priority": "P0",
+    "depends_on": [
+      "B10.2",
+      "B02.2"
+    ],
+    "acceptance": [
+      "AC-15",
+      "AC-18",
+      "AC-53"
+    ],
+    "status": "PLANNED",
+    "owner": "UNASSIGNED",
+    "evidence": ""
+  },
+  {
+    "id": "B11.1",
+    "epic": "B11",
+    "title": "Period generator + idempotent catch-up worker",
+    "priority": "P0",
+    "depends_on": [
+      "B10.1",
+      "B08.1",
+      "B18.1"
+    ],
+    "acceptance": [
+      "AC-08",
+      "AC-09",
+      "AC-39"
+    ],
+    "status": "PLANNED",
+    "owner": "UNASSIGNED",
+    "evidence": ""
+  },
+  {
+    "id": "B11.2",
+    "epic": "B11",
+    "title": "In-app/email reminder milestones and stop conditions",
+    "priority": "P0",
+    "depends_on": [
+      "B11.1",
+      "B18.2"
+    ],
+    "acceptance": [
+      "AC-08",
+      "AC-56"
+    ],
+    "status": "PLANNED",
+    "owner": "UNASSIGNED",
+    "evidence": ""
+  },
+  {
+    "id": "B11.3",
+    "epic": "B11",
+    "title": "Job replay/dead-letter diagnostics and billing UI",
+    "priority": "P0",
+    "depends_on": [
+      "B11.2"
+    ],
+    "acceptance": [
+      "AC-39",
+      "AC-56"
+    ],
+    "status": "PLANNED",
+    "owner": "UNASSIGNED",
+    "evidence": ""
+  },
+  {
+    "id": "B12.1",
+    "epic": "B12",
+    "title": "Amendment approval/future pricing/conflict",
+    "priority": "P0",
+    "depends_on": [
+      "B10.2",
+      "B04.3"
+    ],
+    "acceptance": [
+      "AC-40"
+    ],
+    "status": "PLANNED",
+    "owner": "UNASSIGNED",
+    "evidence": ""
+  },
+  {
+    "id": "B12.2",
+    "epic": "B12",
+    "title": "Scheduled target allocation incl. cross-location permission",
+    "priority": "P0",
+    "depends_on": [
+      "B12.1",
+      "B07.1"
+    ],
+    "acceptance": [
+      "AC-12",
+      "AC-41"
+    ],
+    "status": "PLANNED",
+    "owner": "UNASSIGNED",
+    "evidence": ""
+  },
+  {
+    "id": "B12.3",
+    "epic": "B12",
+    "title": "Execute move/inspection/segments/adjustment atomic",
+    "priority": "P0",
+    "depends_on": [
+      "B12.2",
+      "B08.3"
+    ],
+    "acceptance": [
+      "AC-12",
+      "AC-42",
+      "AC-43"
+    ],
+    "status": "PLANNED",
+    "owner": "UNASSIGNED",
+    "evidence": ""
+  },
+  {
+    "id": "B13.1",
+    "epic": "B13",
+    "title": "Ticket/private photo/state/priority + portal",
+    "priority": "P0",
+    "depends_on": [
+      "B10.2",
+      "B02.3"
+    ],
+    "acceptance": [
+      "AC-15",
+      "AC-44"
+    ],
+    "status": "PLANNED",
+    "owner": "UNASSIGNED",
+    "evidence": ""
+  },
+  {
+    "id": "B13.2",
+    "epic": "B13",
+    "title": "Assignment/visit consent/SLA/reopen history",
+    "priority": "P0",
+    "depends_on": [
+      "B13.1"
+    ],
+    "acceptance": [
+      "AC-44"
+    ],
+    "status": "PLANNED",
+    "owner": "UNASSIGNED",
+    "evidence": ""
+  },
+  {
+    "id": "B13.3",
+    "epic": "B13",
+    "title": "Routine/turnover inspections and ready blockers",
+    "priority": "P0",
+    "depends_on": [
+      "B13.2",
+      "B14.2"
+    ],
+    "acceptance": [
+      "AC-45"
+    ],
+    "status": "PLANNED",
+    "owner": "UNASSIGNED",
+    "evidence": ""
+  },
+  {
+    "id": "B14.1",
+    "epic": "B14",
+    "title": "Request/approval/final estimate versioned policy",
+    "priority": "P0",
+    "depends_on": [
+      "B10.2",
+      "B09.1",
+      "B12.3"
+    ],
+    "acceptance": [
+      "AC-14",
+      "AC-46"
+    ],
+    "status": "PLANNED",
+    "owner": "UNASSIGNED",
+    "evidence": ""
+  },
+  {
+    "id": "B14.2",
+    "epic": "B14",
+    "title": "Physical exit/presence/dirty/turnover transaction",
+    "priority": "P0",
+    "depends_on": [
+      "B14.1"
+    ],
+    "acceptance": [
+      "AC-14",
+      "AC-45",
+      "AC-46"
+    ],
+    "status": "PLANNED",
+    "owner": "UNASSIGNED",
+    "evidence": ""
+  },
+  {
+    "id": "B14.3",
+    "epic": "B14",
+    "title": "Netting/settlement/receivable/refund final UI",
+    "priority": "P0",
+    "depends_on": [
+      "B14.2",
+      "B09.3"
+    ],
+    "acceptance": [
+      "AC-13",
+      "AC-14",
+      "AC-47"
+    ],
+    "status": "PLANNED",
+    "owner": "UNASSIGNED",
+    "evidence": ""
+  },
+  {
+    "id": "B15.1",
+    "epic": "B15",
+    "title": "As-of occupancy/aging/cash/rent/deposit read models",
+    "priority": "P0",
+    "depends_on": [
+      "B08.3",
+      "B10.2"
+    ],
+    "acceptance": [
+      "AC-48",
+      "AC-49"
+    ],
+    "status": "PLANNED",
+    "owner": "UNASSIGNED",
+    "evidence": ""
+  },
+  {
+    "id": "B15.2",
+    "epic": "B15",
+    "title": "Scoped private export jobs/CSV hardening",
+    "priority": "P0",
+    "depends_on": [
+      "B15.1",
+      "B02.3"
+    ],
+    "acceptance": [
+      "AC-15",
+      "AC-49"
+    ],
+    "status": "PLANNED",
+    "owner": "UNASSIGNED",
+    "evidence": ""
+  },
+  {
+    "id": "B15.3",
+    "epic": "B15",
+    "title": "Expenses/void/reference + dashboard reconciliation",
+    "priority": "P0",
+    "depends_on": [
+      "B15.1"
+    ],
+    "acceptance": [
+      "AC-48"
+    ],
+    "status": "PLANNED",
+    "owner": "UNASSIGNED",
+    "evidence": ""
+  },
+  {
+    "id": "B16.1",
+    "epic": "B16",
+    "title": "Plan/entitlement schema and atomic quota service",
+    "priority": "P0",
+    "depends_on": [
+      "B02.2",
+      "B03.1"
+    ],
+    "acceptance": [
+      "AC-16",
+      "AC-50"
+    ],
+    "status": "PLANNED",
+    "owner": "UNASSIGNED",
+    "evidence": ""
+  },
+  {
+    "id": "B16.2",
+    "epic": "B16",
+    "title": "Platform admin manual activation/trial/expiry/grace",
+    "priority": "P0",
+    "depends_on": [
+      "B16.1"
+    ],
+    "acceptance": [
+      "AC-23",
+      "AC-50"
+    ],
+    "status": "PLANNED",
+    "owner": "UNASSIGNED",
+    "evidence": ""
+  },
+  {
+    "id": "B16.3",
+    "epic": "B16",
+    "title": "Restricted obligations/export/cancellation lifecycle",
+    "priority": "P0",
+    "depends_on": [
+      "B16.2",
+      "B15.2"
+    ],
+    "acceptance": [
+      "AC-16",
+      "AC-23",
+      "AC-50"
+    ],
+    "status": "PLANNED",
+    "owner": "UNASSIGNED",
+    "evidence": ""
+  },
+  {
+    "id": "B17.1",
+    "epic": "B17",
+    "title": "CSV mapping/staging/dry-run checksum/errors",
+    "priority": "P0",
+    "depends_on": [
+      "B03.2",
+      "B10.1"
+    ],
+    "acceptance": [
+      "AC-51",
+      "AC-52"
+    ],
+    "status": "PLANNED",
+    "owner": "UNASSIGNED",
+    "evidence": ""
+  },
+  {
+    "id": "B17.2",
+    "epic": "B17",
+    "title": "Atomic commit/external keys/opening entries",
+    "priority": "P0",
+    "depends_on": [
+      "B17.1",
+      "B09.1",
+      "B08.1"
+    ],
+    "acceptance": [
+      "AC-17",
+      "AC-51",
+      "AC-53"
+    ],
+    "status": "PLANNED",
+    "owner": "UNASSIGNED",
+    "evidence": ""
+  },
+  {
+    "id": "B17.3",
+    "epic": "B17",
+    "title": "Cutover/billing resume/reconciliation approval",
+    "priority": "P0",
+    "depends_on": [
+      "B17.2",
+      "B11.1"
+    ],
+    "acceptance": [
+      "AC-17",
+      "AC-52",
+      "AC-53"
+    ],
+    "status": "PLANNED",
+    "owner": "UNASSIGNED",
+    "evidence": ""
+  },
+  {
+    "id": "B18.1",
+    "epic": "B18",
+    "title": "Transactional outbox/jobs/idempotency framework",
+    "priority": "P0",
+    "depends_on": [
+      "B02.1"
+    ],
+    "acceptance": [
+      "AC-24",
+      "AC-28",
+      "AC-54"
+    ],
+    "status": "PLANNED",
+    "owner": "UNASSIGNED",
+    "evidence": ""
+  },
+  {
+    "id": "B18.2",
+    "epic": "B18",
+    "title": "Email adapter, in-app, retry/delivery logs",
+    "priority": "P0",
+    "depends_on": [
+      "B18.1",
+      "B01.3"
+    ],
+    "acceptance": [
+      "AC-08",
+      "AC-56"
+    ],
+    "status": "PLANNED",
+    "owner": "UNASSIGNED",
+    "evidence": ""
+  },
+  {
+    "id": "B18.3",
+    "epic": "B18",
+    "title": "Durable audit, masking, metrics/alerts",
+    "priority": "P0",
+    "depends_on": [
+      "B18.1"
+    ],
+    "acceptance": [
+      "AC-28",
+      "AC-54"
+    ],
+    "status": "PLANNED",
+    "owner": "UNASSIGNED",
+    "evidence": ""
+  },
+  {
+    "id": "B19.1",
+    "epic": "B19",
+    "title": "Responsive/a11y/offline/error-state completion",
+    "priority": "P0",
+    "depends_on": [
+      "B05.3",
+      "B10.3"
+    ],
+    "acceptance": [
+      "AC-18"
+    ],
+    "status": "PLANNED",
+    "owner": "UNASSIGNED",
+    "evidence": ""
+  },
+  {
+    "id": "B19.2",
+    "epic": "B19",
+    "title": "Security + concurrent/load regression suite",
+    "priority": "P0",
+    "depends_on": [
+      "B07.3",
+      "B09.3",
+      "B16.3"
+    ],
+    "acceptance": [
+      "AC-02",
+      "AC-03",
+      "AC-35",
+      "AC-55"
+    ],
+    "status": "PLANNED",
+    "owner": "UNASSIGNED",
+    "evidence": ""
+  },
+  {
+    "id": "B19.3",
+    "epic": "B19",
+    "title": "Infra/restore/retention/incident drill",
+    "priority": "P0",
+    "depends_on": [
+      "B02.3",
+      "B18.3"
+    ],
+    "acceptance": [
+      "AC-19",
+      "AC-54",
+      "AC-57"
+    ],
+    "status": "PLANNED",
+    "owner": "UNASSIGNED",
+    "evidence": ""
+  },
+  {
+    "id": "B20.1",
+    "epic": "B20",
+    "title": "UAT fixtures/operator guides + cutover rehearsal",
+    "priority": "P0",
+    "depends_on": [
+      "B14.3",
+      "B15.3",
+      "B17.3",
+      "B19.1"
+    ],
+    "acceptance": [
+      "AC-59",
+      "AC-60"
+    ],
+    "status": "PLANNED",
+    "owner": "UNASSIGNED",
+    "evidence": ""
+  },
+  {
+    "id": "B20.2",
+    "epic": "B20",
+    "title": "Resolve defects and collect gate evidence",
+    "priority": "P0",
+    "depends_on": [
+      "B20.1",
+      "B19.2",
+      "B19.3"
+    ],
+    "acceptance": [
+      "AC-19",
+      "AC-55",
+      "AC-59",
+      "AC-60"
+    ],
+    "status": "PLANNED",
+    "owner": "UNASSIGNED",
+    "evidence": ""
+  },
+  {
+    "id": "B20.3",
+    "epic": "B20",
+    "title": "Release notes/version/tag/approval and pilot launch",
+    "priority": "P0",
+    "depends_on": [
+      "B20.2"
+    ],
+    "acceptance": [
+      "AC-60"
+    ],
+    "status": "PLANNED",
+    "owner": "UNASSIGNED",
+    "evidence": ""
+  }
+]

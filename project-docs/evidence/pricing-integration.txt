@@ -1,0 +1,47 @@
+
+> kost-hospitality@0.3.0 test:integration
+> tsx scripts/integration.ts
+
+TEST_ONLY development plan configured; new assignments: 0; existing entitlements preserved.
+Encrypted legacy outbox rows: 0; no token values logged.
+Encrypted-only outbox constraint validated; application/worker roles restricted.
+Private bucket available: kost-test-private
+✔ MFA enrollment, anti-replay, challenge gating, recovery and disable preserve account security (1792.2034ms)
+✔ invitation establishes scoped membership, is retry-safe, and scope/revoke take effect on next request (2337.7755ms)
+✔ invitation guards verified email, expiry, revocation and cross-tenant location IDs (2948.2722ms)
+✔ manual staff changes cannot remove last Owner, including concurrent API revocations (1437.3411ms)
+✔ restricted worker sends real invitation to local SMTP and cannot read tenant records/passwords (1185.6697ms)
+✔ role/location matrix and private-file access are reevaluated immediately after revoke (3845.3744ms)
+✔ MFA challenge has bounded attempts and server-enforced expiry (894.041ms)
+✔ normal API retains registration throttling despite E2E fixture override option (806.0263ms)
+✔ unverified account can request a fresh verification email without reusing the old token (316.6435ms)
+✔ reauth token expires and is bound to the original authenticated session (885.1195ms)
+✔ foundation API: real persistence, tenant denial, CSRF, token reuse and logout (987.1425ms)
+✔ database role cannot bypass RLS and unscoped tenant queries return no data (8.865ms)
+✔ SMTP outbox delivers to local sink and does not claim production delivery (404.0297ms)
+✔ idempotency serializes two database connections and rolls back faulted mutations (476.7399ms)
+✔ private S3 files stay quarantined when scanner unavailable and deny anonymous/cross-tenant downloads (583.5995ms)
+✔ password reset is single-use, revokes sessions and never logs the user in (1063.7712ms)
+✔ database protects last Owner even when two revocations race (555.6365ms)
+✔ pilot generation persists 12 inspection rooms, permits room 13 and a second property, and retries never duplicate (989.0725ms)
+✔ room quota serializes parallel creates and preserves idempotency after limit reached (623.7903ms)
+✔ bulk preview reserves nothing; quota and unique-code failures roll back whole commit (662.4068ms)
+✔ type snapshots stay immutable, stale previews/versions fail and explicit changes reset checklist (813.3314ms)
+✔ restricted/expired development entitlement blocks acquisition but preserves read/checklist and is prohibited in production context (822.0139ms)
+✔ location-scoped Manager/Ops/Finance permissions and tenant-wide quota are enforced (3116.2797ms)
+✔ location quota and staff seat quota cannot be exceeded by concurrent commands (1331.8616ms)
+✔ quota also guards restores and retains archived codes (487.2271ms)
+✔ downgrade below current usage is rejected without deleting rooms (509.8477ms)
+✔ effective policy uses location midnight, room then type then base overrides including zero (905.5106ms)
+✔ policy concurrent CAS and retry are atomic; immutable quote snapshot survives later policy and same-key retries (772.615ms)
+✔ cross-tenant and cross-property overrides rollback and pricing roles/scopes are enforced (3447.5664ms)
+✔ missing policy, invalid dates/money/minimum and capacity fail without saved quote; expiry keeps historical snapshot (851.6652ms)
+✔ runtime cannot rewrite policies/quotes or append overrides to previously committed policy (510.271ms)
+ℹ tests 31
+ℹ suites 0
+ℹ pass 31
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 18513.4786

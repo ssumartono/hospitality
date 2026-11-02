@@ -1,0 +1,52 @@
+
+> kost-hospitality@0.5.0 test:integration
+> tsx scripts/integration.ts
+
+TEST_ONLY development plan configured; new assignments: 0; existing entitlements preserved.
+Encrypted legacy outbox rows: 0; no token values logged.
+Encrypted-only outbox constraint validated; application/worker roles restricted.
+Private bucket available: kost-test-private
+✔ MFA enrollment, anti-replay, challenge gating, recovery and disable preserve account security (3189.9478ms)
+✔ invitation establishes scoped membership, is retry-safe, and scope/revoke take effect on next request (3200.7918ms)
+✔ invitation guards verified email, expiry, revocation and cross-tenant location IDs (3471.3016ms)
+✔ manual staff changes cannot remove last Owner, including concurrent API revocations (1493.48ms)
+✔ restricted worker sends real invitation to local SMTP and cannot read tenant records/passwords (1271.7043ms)
+✔ role/location matrix and private-file access are reevaluated immediately after revoke (3685.6461ms)
+✔ MFA challenge has bounded attempts and server-enforced expiry (1017.4379ms)
+✔ normal API retains registration throttling despite E2E fixture override option (699.9776ms)
+✔ unverified account can request a fresh verification email without reusing the old token (329.0375ms)
+✔ reauth token expires and is bound to the original authenticated session (879.9514ms)
+✔ parallel block requests cannot overlap; failures rollback block/audit and retries do not duplicate (1690.0506ms)
+✔ two independent database transactions contend on hold exclusion and ongoing null end locks future dates (1370.98ms)
+✔ physical presence survives planned end/released allocation, prevents new block, unique active presence and tenant FKs hold (1781.4084ms)
+✔ block role/location/tenant boundaries and deferred parent-allocation consistency reject incomplete commands (4817.4904ms)
+✔ booking snapshot guard rejects changed/expired quotes and preserves requested ongoing end separately from preview (834.3053ms)
+✔ foundation API: real persistence, tenant denial, CSRF, token reuse and logout (1675.3436ms)
+✔ database role cannot bypass RLS and unscoped tenant queries return no data (9.3643ms)
+✔ SMTP outbox delivers to local sink and does not claim production delivery (834.5999ms)
+✔ idempotency serializes two database connections and rolls back faulted mutations (726.8159ms)
+✔ private S3 files stay quarantined when scanner unavailable and deny anonymous/cross-tenant downloads (921.8647ms)
+✔ password reset is single-use, revokes sessions and never logs the user in (1330.7801ms)
+✔ database protects last Owner even when two revocations race (661.5171ms)
+✔ pilot generation persists 12 inspection rooms, permits room 13 and a second property, and retries never duplicate (1744.5924ms)
+✔ room quota serializes parallel creates and preserves idempotency after limit reached (1360.231ms)
+✔ bulk preview reserves nothing; quota and unique-code failures roll back whole commit (1152.7307ms)
+✔ type snapshots stay immutable, stale previews/versions fail and explicit changes reset checklist (1407.4484ms)
+✔ restricted/expired development entitlement blocks acquisition but preserves read/checklist and is prohibited in production context (872.5965ms)
+✔ location-scoped Manager/Ops/Finance permissions and tenant-wide quota are enforced (3582.6588ms)
+✔ location quota and staff seat quota cannot be exceeded by concurrent commands (1370.2295ms)
+✔ quota also guards restores and retains archived codes (583.0817ms)
+✔ downgrade below current usage is rejected without deleting rooms (494.7524ms)
+✔ effective policy uses location midnight, room then type then base overrides including zero (1702.3231ms)
+✔ policy concurrent CAS and retry are atomic; immutable quote snapshot survives later policy and same-key retries (1588.848ms)
+✔ cross-tenant and cross-property overrides rollback and pricing roles/scopes are enforced (4698.3343ms)
+✔ missing policy, invalid dates/money/minimum and capacity fail without saved quote; expiry keeps historical snapshot (952.3344ms)
+✔ runtime cannot rewrite policies/quotes or append overrides to previously committed policy (586.3325ms)
+ℹ tests 36
+ℹ suites 0
+ℹ pass 36
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 23106.2862

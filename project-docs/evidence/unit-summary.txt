@@ -1,0 +1,6 @@
+npm test (tsx --test tests/security.test.ts)
+PASS 3 / FAIL 0
+- Argon2id independent salts, valid and invalid password verification
+- Session token 256-bit entropy and hashed persistence primitive
+- Private upload rejects empty, executable, SVG and oversize content; PDF MIME sniff
+Scope: primitive security only; not production acceptance.

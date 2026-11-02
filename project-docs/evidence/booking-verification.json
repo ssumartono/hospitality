@@ -1,0 +1,59 @@
+{
+  "recordedAt": "2026-11-02T14:25:24.576Z",
+  "build": "0.6.0",
+  "buildPassed": true,
+  "unit": {
+    "passed": 15,
+    "failed": 0
+  },
+  "integration": {
+    "passed": 41,
+    "failed": 0,
+    "database": "kost_test"
+  },
+  "e2e": {
+    "passed": 14,
+    "failed": 0,
+    "reportedDuration": "1.8m",
+    "database": "kost_e2e",
+    "viewports": [
+      1280,
+      360
+    ]
+  },
+  "dataPreservation": {
+    "matched": true,
+    "tables": 9,
+    "scope": "All columns of preexisting operational tables listed in scripts/checkpoint-data.ts, hashes only",
+    "evidence": [
+      "user-data-booking-before.json",
+      "user-data-booking-after.json"
+    ]
+  },
+  "worker": {
+    "localRestarted": true,
+    "functions": [
+      "expiry held booking",
+      "business in-app notifications"
+    ],
+    "businessCustomerEmail": "NOT IMPLEMENTED"
+  },
+  "npmAuditVulnerabilities": 0,
+  "baselineFiles": 22,
+  "baselineMismatches": 0,
+  "focusedEvidence": {
+    "parallelRealBookingAccept": "PASS (one200, one409; one allocation/invoice/outbox; no orphan)",
+    "invoiceMasterSnapshotIsolation": "PASS",
+    "minimumZeroNoReceipt": "PASS",
+    "expiryRetryAndNotificationDedupe": "PASS",
+    "initialReadinessPastOccupancyGuard": "PASS"
+  },
+  "limitations": [
+    "Payment/proof/receipt/verified allocations/credit/deposit ledger not implemented; received0 by construction",
+    "Invoice balance projection must be integrated with ledger before enabling payments/adjustments",
+    "Proof/review/payment expiry races NOT RUN",
+    "Resident portal/agreement acceptance/check-in and checkout NOT RUN",
+    "Full60AC and G1-G8 incomplete"
+  ],
+  "productionReady": false
+}

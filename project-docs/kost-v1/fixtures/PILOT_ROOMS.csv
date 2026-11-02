@@ -1,0 +1,13 @@
+property_code,room_code,floor,capacity,condition,bathroom,electricity
+PLB-01,101,1,1,inspection,inside_room,prepaid_per_room
+PLB-01,102,1,1,inspection,inside_room,prepaid_per_room
+PLB-01,103,1,1,inspection,inside_room,prepaid_per_room
+PLB-01,104,1,1,inspection,inside_room,prepaid_per_room
+PLB-01,105,1,1,inspection,inside_room,prepaid_per_room
+PLB-01,106,1,1,inspection,inside_room,prepaid_per_room
+PLB-01,201,2,1,inspection,inside_room,prepaid_per_room
+PLB-01,202,2,1,inspection,inside_room,prepaid_per_room
+PLB-01,203,2,1,inspection,inside_room,prepaid_per_room
+PLB-01,204,2,1,inspection,inside_room,prepaid_per_room
+PLB-01,205,2,1,inspection,inside_room,prepaid_per_room
+PLB-01,206,2,1,inspection,inside_room,prepaid_per_room

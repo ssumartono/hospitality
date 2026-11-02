@@ -1,0 +1,51 @@
+{
+  "recordedAt": "2026-11-01T15:03:49.216Z",
+  "runtime": {
+    "node": "24.13.0",
+    "npm": "11.19.1",
+    "docker": "29.2.1"
+  },
+  "dependencies": {
+    "@aws-sdk/client-s3": "3.1161.0",
+    "@aws-sdk/s3-request-presigner": "3.1161.0",
+    "@fastify/cookie": "11.1.5",
+    "@fastify/multipart": "10.1.6",
+    "@fastify/rate-limit": "11.2.1",
+    "@radix-ui/react-slot": "1.5.0",
+    "argon2": "0.45.1",
+    "class-variance-authority": "0.7.1",
+    "clsx": "2.1.1",
+    "dotenv": "18.0.9",
+    "fastify": "5.12.7",
+    "file-type": "22.3.0",
+    "lucide-react": "1.66.0",
+    "nodemailer": "10.3.1",
+    "otpauth": "9.5.2",
+    "pg": "8.23.1",
+    "react": "19.3.1",
+    "react-dom": "19.3.1",
+    "tailwind-merge": "3.7.0",
+    "zod": "4.6.7"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.64.1",
+    "@types/node": "26.6.6",
+    "@types/nodemailer": "8.0.2",
+    "@types/pg": "8.23.1",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "@vitejs/plugin-react": "6.1.2",
+    "prettier": "3.9.10",
+    "tsx": "4.23.15",
+    "typescript": "7.0.2",
+    "vite": "8.3.5"
+  },
+  "localServices": {
+    "postgres": "17-alpine@sha256:266d3c257594e195b309ae9d1805e54c788f1d7b375f56bf6c367aac6c917e7b",
+    "mailpit": "v1.27.8@sha256:6abc8e633df15eaf785cfcf38bae48e66f64beecdc03121e249d0f9ec15f0707",
+    "seaweedfs": "4.51@sha256:f7a49e3f3972ebed5be2ed4befa4a0c68eb7bdddba6e692d42729ceb545134b8"
+  },
+  "browser": "Chromium 156.0.8078.4 via Playwright",
+  "scope": "local foundation/account/staff only; production compatibility/performance/security gates NOT RUN",
+  "build": "0.2.0"
+}

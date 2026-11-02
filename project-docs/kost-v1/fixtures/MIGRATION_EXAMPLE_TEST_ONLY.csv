@@ -1,0 +1,2 @@
+property_code,room_code,resident_external_id,resident_name,phone,email,lease_start,lease_end,billing_cycle,billing_cutover_date,billing_resume_date,monthly_rent,opening_receivable,opening_credit,opening_deposit
+PLB-01,101,TEST-RES-001,Penghuni Sintetis,000000000099,resident@example.test,2026-10-01,,anniversary,2026-11-01,2026-11-01,1500000,250000,200000,0

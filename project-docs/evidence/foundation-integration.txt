@@ -1,0 +1,20 @@
+
+> kost-hospitality@0.1.0 test:integration
+> tsx scripts/integration.ts
+
+Private bucket available: kost-test-private
+✔ foundation API: real persistence, tenant denial, CSRF, token reuse and logout (734.9464ms)
+✔ database role cannot bypass RLS and unscoped tenant queries return no data (7.5343ms)
+✔ SMTP outbox delivers to local sink and does not claim production delivery (256.9544ms)
+✔ idempotency serializes two database connections and rolls back faulted mutations (384.6511ms)
+✔ private S3 files stay quarantined when scanner unavailable and deny anonymous/cross-tenant downloads (379.349ms)
+✔ password reset is single-use, revokes sessions and never logs the user in (638.2647ms)
+✔ database protects last Owner even when two revocations race (335.0037ms)
+ℹ tests 7
+ℹ suites 0
+ℹ pass 7
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 3810.8742

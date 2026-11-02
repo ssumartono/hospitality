@@ -1,0 +1,38 @@
+
+> kost-hospitality@0.3.0 test:e2e
+> tsx scripts/prepare-e2e.ts && playwright test
+
+TEST_ONLY development plan configured; new assignments: 0; existing entitlements preserved.
+Encrypted legacy outbox rows: 0; no token values logged.
+Encrypted-only outbox constraint validated; application/worker roles restricted.
+node.exe : [WebServer] (node:21328) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+At line:1 char:1
++ & "C:\Program Files\nodejs/node.exe" "C:\Users\62811\AppData\Roaming\ ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: ([WebServer] (no... env being set.:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:19944) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:13168) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:21004) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 8 tests using 1 worker
+
+(node:19996) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 1 [desktop] › tests\e2e\account-staff.spec.ts:71:1 › account MFA enrollment, recovery login and disable work through the UI (4.6s)
+  ok 2 [desktop] › tests\e2e\account-staff.spec.ts:129:1 › Owner invites staff, changes location scope and revokes access through the UI (7.5s)
+  ok 3 [desktop] › tests\e2e\foundation.spec.ts:3:1 › owner registers, verifies email through SMTP, creates organization and location (2.5s)
+  ok 4 [desktop] › tests\e2e\inventory.spec.ts:118:1 › inventory profile, pilot 12→13, default snapshots, checklist and second location persist (6.1s)
+(node:16580) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 5 [mobile] › tests\e2e\account-staff.spec.ts:71:1 › account MFA enrollment, recovery login and disable work through the UI (4.0s)
+  ok 6 [mobile] › tests\e2e\account-staff.spec.ts:129:1 › Owner invites staff, changes location scope and revokes access through the UI (7.2s)
+  ok 7 [mobile] › tests\e2e\foundation.spec.ts:3:1 › owner registers, verifies email through SMTP, creates organization and location (2.8s)
+  ok 8 [mobile] › tests\e2e\inventory.spec.ts:118:1 › inventory profile, pilot 12→13, default snapshots, checklist and second location persist (6.2s)
+
+  8 passed (48.8s)

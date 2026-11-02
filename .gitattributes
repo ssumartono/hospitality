@@ -1,0 +1,4 @@
+* text=auto eol=lf
+*.png binary
+# Preserve baseline package bytes for MANIFEST.sha256
+project-docs/kost-v1/** -text
